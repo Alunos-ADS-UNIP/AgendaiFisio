@@ -30,7 +30,7 @@
 
             <div class="input-group">
                 <label for="senha">Senha</label>
-                <input type="password" id="senha" placeholder="Crie uma senha forte" class="input-estilizado">
+                <input type="password" maxlength="8" id="senha" placeholder="Crie uma senha forte" class="input-estilizado">
             </div>
 
             <div class="lgpd-container">
@@ -39,6 +39,18 @@
             </div>
 
             <button type="button" id="btnCadastrar" class="btn-auth" disabled>Cadastrar como Paciente</button>
+
+            <dialog id="cadastroSucesso" class="modal-moderno">
+                <div class="header">Cadastrado com Sucesso
+
+
+
+                </div>
+
+
+
+
+            </dialog>
             
             <div class="auth-footer" style="margin-top: 20px; font-size: 13px;">
                 <span>Já tem conta? <a href="./login.html" style="color: #A7C27E; text-decoration: none; font-weight: bold;">Fazer Login</a></span>

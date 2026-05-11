@@ -6,7 +6,8 @@ window.onload = function() {
         inputEmail: document.getElementById("emailCadastro"),
         inputSenha: document.getElementById("senhaCadastro"),
         checkLGPD: document.getElementById("checkLGPD"), // Novo elemento
-        URL_API: "http://localhost:8000/register"
+        URL_API: "http://localhost:8000/register",
+        cadastroSucesso: document.getElementById("cadastroSucesso")
     };
 
     // --- 1. MÁSCARA DE CPF (Lógica Funcional) ---
@@ -73,6 +74,7 @@ window.onload = function() {
             e.preventDefault();
             enviarCadastro();
         };
+        elements.cadastroSucesso.showModal();
     }
 };
 function selecionarPerfil(tipo) {

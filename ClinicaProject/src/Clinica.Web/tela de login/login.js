@@ -14,6 +14,36 @@ window.onload = function() {
             e.target.value = v;
         });
     }
+    function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, ''); // Remove pontos e traços
+            if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false; // Verifica tamanho e repetidos
+            
+            // Lógica matemática de validação
+            let soma = 0;
+            let resto;
+            for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            resto = (soma * 10) % 11;
+            if ((resto === 10) || (resto === 11)) resto = 0;
+            if (resto !== parseInt(cpf.substring(9, 10))) return false;
+            
+            soma = 0;
+            for (let i = 1; i <= 10; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            resto = (soma * 10) % 11;
+            if ((resto === 10) || (resto === 11)) resto = 0;
+            if (resto !== parseInt(cpf.substring(10, 11))) return false;
+            
+            return true;
+        }
+
+        function checkForm() {
+            let cpf = document.getElementById('cpf').value;
+            if (!validarCPF(cpf)) {
+                alert('CPF Inválido!');
+                return false;
+            }
+            alert('CPF Válido!');
+            return true;
+        }
 
     // --- LÓGICA DE LOGIN ---
     if (btnEntrar) {
@@ -39,7 +69,7 @@ window.onload = function() {
             btnEntrar.disabled = true;
 
             setTimeout(() => {
-                window.location.replace("index.html");
+                window.location.href = "../Tela de Agendamento/index.html";
             }, 500);
         });
     }
