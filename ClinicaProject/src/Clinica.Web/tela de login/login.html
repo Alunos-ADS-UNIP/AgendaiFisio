@@ -19,6 +19,7 @@
                 <label for="cpfLogin">CPF</label>
                 <input type="text" 
                        id="cpfLogin" 
+                       pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" 
                        placeholder="000.000.000-00" 
                        maxlength="14" 
                        class="input-estilizado"
@@ -27,7 +28,7 @@
         <!--CAMPO DA SENHA DE LOGIN-->
             <div class="input-group">
                 <label for="senha">Senha</label>
-                <input type="password" id="senha" placeholder="Digite sua senha" class="input-estilizado">
+                <input maxlength="8" type="password" id="senha" placeholder="Digite sua senha" class="input-estilizado">
             </div>
         <!--BOTÃO DE ENTRAR COM ID PARA JS -->
             <button type="button" id="btnEntrar" class="btn-auth">Entrar</button>

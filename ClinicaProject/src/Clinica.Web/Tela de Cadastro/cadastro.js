@@ -6,7 +6,9 @@ window.onload = function() {
         inputEmail: document.getElementById("emailCadastro"),
         inputSenha: document.getElementById("senhaCadastro"),
         checkLGPD: document.getElementById("checkLGPD"), // Novo elemento
-        URL_API: "http://localhost:8000/register"
+        URL_API: "http://localhost:8000/register",
+        dialog: document.getElementById("modalSucessoCadastro"),
+        btnRedirecionar: document.getElementById("btnRedirecionar")
     };
 
     // --- 1. MÁSCARA DE CPF (Lógica Funcional) ---
@@ -25,6 +27,37 @@ window.onload = function() {
             el.inputCPF.classList.remove("input-erro");
         });
     }
+            function validarCPF(cpf) {
+            cpf = cpf.replace(/[^\d]+/g, ''); // Remove pontos e traços
+            if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false; // Verifica tamanho e repetidos
+            
+            // Lógica matemática de validação
+            let soma = 0;
+            let resto;
+            for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+            resto = (soma * 10) % 11;
+            if ((resto === 10) || (resto === 11)) resto = 0;
+            if (resto !== parseInt(cpf.substring(9, 10))) return false;
+            
+            soma = 0;
+            for (let i = 1; i <= 10; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+            resto = (soma * 10) % 11;
+            if ((resto === 10) || (resto === 11)) resto = 0;
+            if (resto !== parseInt(cpf.substring(10, 11))) return false;
+            
+            return true;
+        }
+
+        function checkForm() {
+            let cpf = document.getElementById('cpf').value;
+            if (!validarCPF(cpf)) {
+                alert('CPF Inválido!');
+                return false;
+            }
+            alert('CPF Válido!');
+            return true;
+        }
+
 
     // --- 2. LÓGICA LGPD (Habilitar Botão) ---
     if (el.checkLGPD && el.btnCadastrar) {
@@ -32,6 +65,7 @@ window.onload = function() {
             el.btnCadastrar.disabled = !el.checkLGPD.checked;
         });
     }
+
 
     // --- 3. ENVIO DO FORMULÁRIO ---
     const enviarCadastro = async () => {
@@ -56,25 +90,35 @@ window.onload = function() {
             });
 
             if (response.ok) {
-                alert("✅ Cadastro realizado com sucesso!");
-                window.location.href = "./login.html";
+                el.dialog.showModal();
             } else {
                 const erro = await response.json();
                 alert(erro.detail || "Erro ao cadastrar.");
+                el.dialog.showModal();
             }
         } catch (err) {
             console.error("Erro:", err);
             alert("Erro ao conectar com o servidor.");
+            el.dialog.showModal();
         }
     };
+    ///4. EVENTOS///
 
     if (el.btnCadastrar) {
         el.btnCadastrar.onclick = (e) => {
             e.preventDefault();
             enviarCadastro();
         };
+
     }
+        if  (el.btnRedirecionar) {
+            el.btnRedirecionar.addEventListener("click", () =>{
+                el.dialog.close();
+                window.location.href = ("../tela de login/login.html");
+        });
+        }
 };
+
 function selecionarPerfil(tipo) {
     // Adiciona uma pequena animação de clique antes de redirecionar
     const card = tipo === 'paciente' ? 
