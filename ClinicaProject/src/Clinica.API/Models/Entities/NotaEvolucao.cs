@@ -2,13 +2,10 @@ using System;
 
 namespace Clinica.API.Models.Entities
 {
-    /// <summary>
-    /// Entidade que representa a tabela 'nota_evolucao' no banco de dados (clinica.db).
-    /// Todas as validações espelham as constraints definidas no script SQL.
-    /// </summary>
+
     public class NotaEvolucao
     {
-        // ── Propriedades (mapeiam colunas do banco) ──────────────────────────
+        // ── Propriedades  ──────────────────────────
         public int Id { get; private set; }
         public int IdProntuario { get; private set; }
         public int IdTerapeuta { get; private set; }
@@ -16,15 +13,11 @@ namespace Clinica.API.Models.Entities
         public string TextoEvolucao { get; private set; } = string.Empty;
         public DateTime DataRegistro { get; private set; }
 
-        // ── Construtor privado (impede criação sem validação) ────────────────
+        // ── Construtor privado ────────────────
         private NotaEvolucao() { }
 
         // ── Factory: criação de novo registro ────────────────────────────────
-        /// <summary>
-        /// Cria uma nova instância validada de NotaEvolucao para INSERT no banco.
-        /// DataRegistro é preenchido automaticamente com DateTime.UtcNow
-        /// (espelha o DEFAULT CURRENT_TIMESTAMP do SQL).
-        /// </summary>
+
         public static NotaEvolucao Criar(int idProntuario, int idTerapeuta, string textoEvolucao, int? idAgendamento = null)
         {
             // 1. FK id_prontuario — NOT NULL

@@ -2,28 +2,21 @@ using System;
 
 namespace Clinica.API.Models.Entities
 {
-    /// <summary>
-    /// Entidade que representa a tabela 'prontuario' no banco de dados (clinica.db).
-    /// Todas as validações espelham as constraints definidas no script SQL.
-    /// </summary>
+
     public class Prontuario
     {
-        // ── Propriedades (mapeiam colunas do banco) ──────────────────────────
+        // ── Propriedades  ──────────────────────────
         public int Id { get; private set; }
         public int IdPaciente { get; private set; }
         public int IdTerapeuta { get; private set; }
         public int Versao { get; private set; }
         public string? Descricao { get; private set; }
 
-        // ── Construtor privado (impede criação sem validação) ────────────────
+        // ── Construtor privado ────────────────
         private Prontuario() { }
 
-        // ── Factory: criação de novo registro ────────────────────────────────
-        /// <summary>
-        /// Cria uma nova instância validada de Prontuario para INSERT no banco.
-        /// Descricao é opcional conforme o schema SQL (sem NOT NULL).
-        /// Versao inicia em 1 conforme DEFAULT do SQL.
-        /// </summary>
+        // ── Factory: criação de novo registro ────────────────────────────────    
+
         public static Prontuario Criar(int idPaciente, int idTerapeuta, string? descricao = null)
         {
             // 1. FK id_paciente — NOT NULL

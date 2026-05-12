@@ -2,13 +2,9 @@ using System;
 
 namespace Clinica.API.Models.Entities
 {
-    /// <summary>
-    /// Entidade que representa a tabela 'agendamento' no banco de dados (clinica.db).
-    /// Todas as validações espelham as constraints definidas no script SQL.
-    /// </summary>
     public class Agendamento
     {
-        // ── Propriedades (mapeiam colunas do banco) ──────────────────────────
+        // ── Propriedades  ──────────────────────────
         public int Id { get; private set; }
         public int IdPaciente { get; private set; }
         public int IdTerapeuta { get; private set; }
@@ -16,18 +12,15 @@ namespace Clinica.API.Models.Entities
         public int DuracaoMin { get; private set; }
         public string Status { get; private set; } = string.Empty;
 
-        // ── Valores permitidos (espelham CHECK do SQL) ───────────────────────
+        // ── Valores permitidos  ───────────────────────
         private static readonly string[] StatusPermitidos =
             { "PENDENTE", "CONFIRMADO", "CANCELADO", "REALIZADO", "NO_SHOW" };
 
-        // ── Construtor privado (impede criação sem validação) ────────────────
+        // ── Construtor privado ────────────────
         private Agendamento() { }
 
         // ── Factory: criação de novo registro ────────────────────────────────
-        /// <summary>
-        /// Cria uma nova instância validada de Agendamento para INSERT no banco.
-        /// O status padrão é 'PENDENTE', conforme DEFAULT do SQL.
-        /// </summary>
+        
         public static Agendamento Criar(int idPaciente, int idTerapeuta, DateTime dataHora, int duracaoMin, string status = "PENDENTE")
         {
             // 1. FK id_paciente — NOT NULL, deve referenciar um usuario válido

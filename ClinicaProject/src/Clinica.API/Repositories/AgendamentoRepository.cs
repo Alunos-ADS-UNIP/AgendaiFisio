@@ -17,11 +17,6 @@ namespace Clinica.API.Repositories
         }
 
         // ── Verifica conflito de horário ─────────────────────────────────────
-        /// <summary>
-        /// Retorna a quantidade de agendamentos ativos para o mesmo
-        /// terapeuta no mesmo horário (status != 'CANCELADO').
-        /// Se > 0, o horário está indisponível.
-        /// </summary>
         public int ContarAgendamentosNoHorario(int idTerapeuta, DateTime dataHora)
         {
             const string sql = @"
@@ -42,9 +37,6 @@ namespace Clinica.API.Repositories
         }
 
         // ── Insere novo agendamento ───────────────────────────────────────────
-        /// <summary>
-        /// Grava o agendamento na tabela e retorna o id gerado.
-        /// </summary>
         public int Inserir(int idPaciente, int idTerapeuta, DateTime dataHora, int duracaoMin, string status)
         {
             const string sql = @"
@@ -69,9 +61,7 @@ namespace Clinica.API.Repositories
         }
 
         // ── Lista agendamentos por terapeuta ──────────────────────────────────
-        /// <summary>
-        /// Retorna todos os agendamentos de um terapeuta ordenados por data_hora.
-        /// </summary>
+
         public IEnumerable<Agendamento> ListarPorTerapeuta(int idTerapeuta)
         {
             const string sql = @"

@@ -85,9 +85,6 @@ namespace Clinica.API.Models.Entities
         }
 
         // ── Validação de CPF (dígitos verificadores) ─────────────────────────
-        /// <summary>
-        /// Valida CPF com ou sem máscara (ex: 123.456.789-09 ou 12345678909).
-        /// </summary>
 
         public static bool ValidarCpf(string cpf) 
         {

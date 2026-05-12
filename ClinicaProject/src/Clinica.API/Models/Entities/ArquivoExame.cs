@@ -2,13 +2,10 @@ using System;
 
 namespace Clinica.API.Models.Entities
 {
-    /// <summary>
-    /// Entidade que representa a tabela 'arquivo_exame' no banco de dados (clinica.db).
-    /// Todas as validações espelham as constraints definidas no script SQL.
-    /// </summary>
+
     public class ArquivoExame
     {
-        // ── Propriedades (mapeiam colunas do banco) ──────────────────────────
+        // ── Propriedades  ──────────────────────────
         public int Id { get; private set; }
         public string CaminhoStorage { get; private set; } = string.Empty;
         public long? TamanhoBytes { get; private set; }
@@ -28,15 +25,10 @@ namespace Clinica.API.Models.Entities
             "application/dicom"
         };
 
-        // ── Construtor privado (impede criação sem validação) ────────────────
+        // ── Construtor privado ────────────────
         private ArquivoExame() { }
 
         // ── Factory: criação de novo registro ────────────────────────────────
-        /// <summary>
-        /// Cria uma nova instância validada de ArquivoExame para INSERT no banco.
-        /// DataUpload é preenchido automaticamente com DateTime.UtcNow
-        /// (espelha o DEFAULT CURRENT_TIMESTAMP do SQL).
-        /// </summary>
         public static ArquivoExame Criar(
             string caminhoStorage,
             long? tamanhoBytes = null,
@@ -91,9 +83,7 @@ namespace Clinica.API.Models.Entities
         }
 
         // ── Factory: reconstrução a partir de dados do banco (SELECT) ────────
-        /// <summary>
-        /// Reconstrói a entidade a partir de uma linha do banco de dados.
-        /// </summary>
+
         public static ArquivoExame FromDatabase(
             int id,
             string caminhoStorage,
