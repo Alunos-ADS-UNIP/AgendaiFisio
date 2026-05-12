@@ -59,22 +59,10 @@ namespace Clinica.API.Repositories
             return Convert.ToInt32(command.ExecuteScalar());
         }
 
-            using var connection = new SqliteConnection(_connectionString);
-            connection.Open();
-
-            using var command = new SqliteCommand(sql, connection);
-            command.Parameters.AddWithValue("@id_paciente",  idPaciente);
-            command.Parameters.AddWithValue("@id_terapeuta", idTerapeuta);
-            command.Parameters.AddWithValue("@data_hora",    dataHora.ToString("yyyy-MM-dd HH:mm:ss"));
-            command.Parameters.AddWithValue("@duracao_min",  duracaoMin);
-            command.Parameters.AddWithValue("@status",       status);
-
-            return Convert.ToInt32(command.ExecuteScalar());
-        }
 
         // ── Lista agendamentos por terapeuta ──────────────────────────────────
 
-        public IEnumerable<Agendamento> ListarPorTerapeuta(int idTerapeuta)
+        public IEnumerable<Agendamento> ListarPorTerapeuta(Agendamento agendamento)
         {
             const string sql = @"
                 SELECT id_agendamento,
@@ -91,7 +79,7 @@ namespace Clinica.API.Repositories
             connection.Open();
 
             using var command = new SqliteCommand(sql, connection);
-            command.Parameters.AddWithValue("@id_terapeuta", idTerapeuta);
+            command.Parameters.AddWithValue("@id_terapeuta", agendamento.IdTerapeuta);
 
             using var reader = command.ExecuteReader();
 
