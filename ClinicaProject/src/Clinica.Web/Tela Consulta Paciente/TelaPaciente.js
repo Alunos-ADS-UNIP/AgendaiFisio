@@ -43,6 +43,7 @@ const renderizarConsultasPaciente = () => {
         const card = document.createElement("div");
         card.className = "card-moderno card-consulta-item";
         
+        // CORREÇÃO: Passando o ID de forma totalmente explícita e segura entre aspas simples tratadas
         card.innerHTML = `
             <div class="card-body-info">
                 <span class="badge">Sessão Confirmada</span>
@@ -54,7 +55,7 @@ const renderizarConsultasPaciente = () => {
             </div>
             <div class="botoes-stack" style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
                 <button class="btn-agendar-atalho" style="width: 100%; justify-content: center;" 
-                        onclick="verSintomas('${consulta.sintomas}')">
+                        onclick="verSintomas('${consulta.id}')">
                     📋 Ver Meus Sintomas
                 </button>
                 <button class="btn-cancelar-sessao" onclick="prepararCancelamento('${consulta.id}')">
@@ -68,14 +69,30 @@ const renderizarConsultasPaciente = () => {
 
 // --- FUNÇÕES DE INTERAÇÃO ---
 
-window.verSintomas = (texto) => {
-    elementosPaciente.textoSintomas.innerText = texto;
-    elementosPaciente.modalSintomas.showModal();
+// CORREÇÃO: Função mapeada globalmente com validação de existência dos modais no DOM
+window.verSintomas = (idConsulta) => {
+    const consultas = JSON.parse(localStorage.getItem("consultas_fisio")) || [];
+    const consultaEncontrada = consultas.find(c => String(c.id) === String(idConsulta));
+    
+    // Pega o sintoma salvo ou define uma mensagem padrão amigável caso esteja vazio
+    const textoSintoma = consultaEncontrada && consultaEncontrada.sintomas 
+        ? consultaEncontrada.sintomas 
+        : "Nenhum sintoma foi relatado para esta consulta.";
+
+    // Garante que os elementos existem na tela atual antes de executar o método showModal
+    if (elementosPaciente.textoSintomas && elementosPaciente.modalSintomas) {
+        elementosPaciente.textoSintomas.innerText = textoSintoma;
+        elementosPaciente.modalSintomas.showModal();
+    } else {
+        console.error("Erro: Certifique-se de que os elementos 'textoSintomasPaciente' e 'modalVerSintomas' existem no seu arquivo HTML.");
+    }
 };
 
 window.prepararCancelamento = (id) => {
     idParaCancelar = id;
-    elementosPaciente.modalCancel.showModal();
+    if (elementosPaciente.modalCancel) {
+        elementosPaciente.modalCancel.showModal();
+    }
 };
 
 elementosPaciente.confirmarCancelBtn.onclick = () => {
@@ -98,23 +115,21 @@ elementosPaciente.confirmarCancelBtn.onclick = () => {
             }
         }
 
-        elementosPaciente.modalCancel.close();
+        if (elementosPaciente.modalCancel) {
+            elementosPaciente.modalCancel.close();
+        }
         renderizarConsultasPaciente(); // Atualiza a tela instantaneamente
     }
 };
 
 // Inicializa ao carregar a página
 document.addEventListener("DOMContentLoaded", renderizarConsultasPaciente);
+
 // Escuta mudanças feitas em outras abas e atualiza a interface atual
 window.addEventListener('storage', (e) => {
     if (e.key === 'consultas_fisio' || e.key === 'agendaFisioData') {
-        // Se estiver na tela do paciente, chama a função de renderizar dele
         if (typeof renderizarConsultasPaciente === 'function') renderizarConsultasPaciente();
-        
-        // Se estiver no dashboard do terapeuta, chama a função de dashboard
         if (typeof renderizarDashboard === 'function') renderizarDashboard();
-        
-        // Se estiver na gestão de horários, recarrega a grade
         if (typeof carregarTela === 'function') carregarTela();
     }
 });

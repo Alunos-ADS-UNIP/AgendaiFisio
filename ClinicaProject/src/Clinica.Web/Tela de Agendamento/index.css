@@ -54,17 +54,20 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    mix-blend-mode: multiply;
 }
 h1{
     height: 70px;
     padding: 0;
     margin: 0;
     justify-content: space-between;
+    mix-blend-mode: multiply;
 
 }
 img{
     height: 60px;
     width: auto;
+    mix-blend-mode: multiply;
 }
 
 /* MENU PERFIL (DROPDOWN ORGANIZADO) */
@@ -294,6 +297,14 @@ dialog[open].modal-moderno {
 }
 .btn-hora:hover { border-color: var(--brand); }
 .btn-hora.active { background: var(--brand); color: white; border-color: var(--brand); }
+
+.area-digitacao{
+    width: 450px;
+    height: 10rem;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
+}
 
 /* ============================================================
    6. FEEDBACKS (TOAST & ERROS)

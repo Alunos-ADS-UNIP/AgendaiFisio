@@ -27,7 +27,7 @@ const elements = {
     resumoMedico: document.getElementById('resumoMedico'),
     resumoData: document.getElementById('resumoData'),
     resumoHora: document.getElementById('resumoHora'),
-    btnProximoPasso: document.getElementById('btnProximoPasso'),
+    btnProximoPasso: document.getElementById('btnProxoPasso') || document.getElementById('btnProximoPasso'), // Suporte para correções de digitação na ID
     tiposSintomas: document.getElementById('tiposSintomas')
 };
 
@@ -134,10 +134,40 @@ elements.btnConfirmarAgendamento.onclick = () => {
 
 // PASSO B: Validação Triagem -> Salva e Sucesso
 elements.btnFinalizarTriagem.onclick = () => {
-
-
     const dataRaw = elements.modalData.value;
     const dataFormatada = dataRaw.split("-").reverse().join("/");
+
+    let sintomasColetados = [];
+
+    // 1. Procura por TEXTO digitado em inputs ou textareas dentro da triagem
+    const camposTexto = document.querySelectorAll('#modalTriagem textarea, #modalTriagem input[type="text"]');
+    camposTexto.forEach(campo => {
+        if (campo.value.trim() !== "") {
+            sintomasColetados.push(campo.value.trim());
+        }
+    });
+
+    // 2. Procura por CHECKBOXES ou RADIOS marcados dentro do container de sintomas
+    const opcoesMarcadas = document.querySelectorAll('#tiposSintomas input:checked, #modalTriagem input[type="checkbox"]:checked, #modalTriagem input[type="radio"]:checked');
+    opcoesMarcadas.forEach(opcao => {
+        const label = document.querySelector(`label[for="${opcao.id}"]`);
+        const textoOpcao = label ? label.innerText.trim() : opcao.value;
+        if (textoOpcao) sintomasColetados.push(textoOpcao);
+    });
+
+    // 3. Procura por BOTÕES com classe "active" ou "selecionado" dentro do container
+    if (elements.tiposSintomas) {
+        const botoesAtivos = elements.tiposSintomas.querySelectorAll('.active, .selecionado, .btn-sintoma-ativo');
+        botoesAtivos.forEach(btn => {
+            sintomasColetados.push(btn.innerText.trim());
+        });
+        
+        if (elements.tiposSintomas.value && sintomasColetados.length === 0) {
+            sintomasColetados.push(elements.tiposSintomas.value);
+        }
+    }
+
+    const sintomaFinal = sintomasColetados.length > 0 ? sintomasColetados.join(", ") : "";
 
     const novaConsulta = {
         id: Date.now(),
@@ -146,6 +176,7 @@ elements.btnFinalizarTriagem.onclick = () => {
         data: dataFormatada,
         dataISO: dataRaw,
         hora: horaSelecionada,
+        sintomas: sintomaFinal, 
         status: "Confirmado"
     };
 
@@ -170,16 +201,17 @@ elements.btnFinalizarTriagem.onclick = () => {
 };
 
 // PASSO C: Navegação Pós-Sucesso
-elements.btnProximoPasso.onclick = () => {
-    elements.modalSucesso.close();
-    
-    // Pequeno delay para garantir que o navegador processe a fechada do modal anterior
-    setTimeout(() => {
-        if (elements.modalNavegacao) {
-            elements.modalNavegacao.showModal();
-        }
-    }, 150);
-};
+if (elements.btnProximoPasso) {
+    elements.btnProximoPasso.onclick = () => {
+        elements.modalSucesso.close();
+        
+        setTimeout(() => {
+            if (elements.modalNavegacao) {
+                elements.modalNavegacao.showModal();
+            }
+        }, 150);
+    };
+}
 
 // Monitorar fechamento global para restaurar o scroll do body
 const fecharDialog = (modal) => {
