@@ -21,6 +21,8 @@ const el = {
 
     btnAbrir: document.getElementById("btnAbrir"),
     btnConfirmar: document.getElementById("confirmarAgendamento"),
+    btnAbrirProntuario: document.getElementById("btnAbrirProntuario"),
+    btnAberturaProntuarioPaciente: document.getElementById("btn-abrir-pronturario-paciente"),
 
     modalAgenda: document.getElementById("modalAgenda"),
     modalSucesso: document.getElementById("modalSucesso"),
@@ -87,6 +89,7 @@ function renderConsultas() {
                 Ver Prontuário
             </button>
         `;
+        
 
         el.grid.appendChild(card);
     });
@@ -179,12 +182,13 @@ function finalizarAgendamento() {
 // 8. PRONTUÁRIO
 // ============================================================
 function abrirProntuario(nome) {
-    if (!el.modalProntuario) return;
+    el.btnAbrirProntuario.onclick(() =>+{
+
+    })
 
     el.nomePacienteProntuario.innerText = nome;
     el.textoProntuario.value = "";
 
-    el.modalProntuario.showModal();
 }
 
 function salvarProntuario() {

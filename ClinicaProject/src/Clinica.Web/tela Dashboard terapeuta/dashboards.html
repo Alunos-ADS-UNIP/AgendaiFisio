@@ -7,16 +7,17 @@
     <!-- Importando Fonte Inter (Moderna) -->
     <link href="https://googleapis.com" rel="stylesheet">
     <link rel="stylesheet" href="dashboards.css">
+    <link rel="stylesheet" href="../Tela de Agendamento/index.css">
 </head>
 <body>
 
     <div class="app-container">
         <!-- Sidebar lateral que fica fixa na esquerda -->
         <aside class="sidebar">
-            <div class="logo">🩺 AgendaiFisio</div>
+            <div class="logo"> AgendaiFisio</div>
             <nav>
-                <a href="#" class="active">📅 Consultas</a>
-                <a href="#">👥 Pacientes</a>
+                <a href="../tela Dashboard terapeuta/pacientesTerapeuta.html" class="active">📅 Consultas</a>
+                <a href="../Tela Terapeuta GERAL/TelaTerapeuta.html">👥 Pacientes</a>
                 <a href="#">⚙️ Configurações</a>
             </nav>
             <div class="user-info">
@@ -34,21 +35,24 @@
                 </div>
 
                 <div class="acao-agendamento-topo">
-                    <select id="selectTerapeutaPrincipal" class="select-moderno">
-                        <option value="">Selecione um Profissional...</option>
-                        <option value="Davi">Davi Gusmao Vinciaqui (Psicólogo)</option>
-                        <option value="Ana">Ana Caroline Freitas (Psicóloga)</option>
-                        <option value="Adolfo">Adolfo Martins (Nutricionista)</option>
-                        <option value="Nubia">Nubia Andrade (Geral)</option>
-                    </select>
-                    <button class="btn-novo" id="btnAbrir">+ Agendar Consulta</button>
-                </div>
-            </header>
+                
 
-            <!-- Grid onde os cards aparecem lado a lado -->
-            <div class="consultas-grid" id="gridConsultas">
-                <!-- Injetado via JS -->
-            </div>
+                    </select>
+                </div>
+            <article class="card-moderno card-fisioterapeuta">
+                <span class="badge">Paciente: </span>
+                <h2 id="nomePacienteAgendado">Nome do paceinte: </h2>
+                
+                <div class="campo-selecao">
+                    <label for="selectFisio">Terapeuta/Médico</label>
+                </div>
+
+                <button id="btnAbrirProntuario" class="btn-abrir-prontuario">Ver prontuario</button>
+                <dialog id="btn-abrir-pronturario-paciente">
+                    <h2>Aqui está seu prontuario/Prontuario paciente. </h2>
+
+                </dialog>
+            </article>
         </main>
     </div>
 
