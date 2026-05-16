@@ -19,14 +19,16 @@
 body {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    height: 100dvb;
+    min-height: 100vh;
+    min-height: 100dvb;
     background: #C8DAA0;
     font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
     display: grid;
     place-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto; /* Permite rolagem se a tela for muito baixa (ex: celular em modo paisagem) */
 }
+
 /* ============================================================
    CONTAINER QUADRADO MODERNO
 ============================================================ */
@@ -34,10 +36,10 @@ body {
     background: var(--glass-bg);
     inline-size: 90%;
     max-inline-size: 500px;
-    aspect-ratio: 1 / 1; 
-    padding: 2.5rem;
-    margin: 100px;
-    height: 575px;
+    aspect-ratio: 1 / 1; /* Mantém o formato quadrado perfeito no desktop */
+    padding: 3rem 2.5rem;
+    margin: 2rem auto; /* Substituído o 100px fixo para evitar o estouro da tela */
+    max-height: 90vh; /* Garante que o box não ultrapasse a altura do dispositivo */
     border-radius: var(--radius-premium);
     box-shadow: var(--shadow-elegant);
     border: 1px solid rgba(255, 255, 255, 0.8);
@@ -45,7 +47,7 @@ body {
     flex-direction: column;
     justify-content: center;
     box-sizing: border-box;
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -71,7 +73,7 @@ h2.titulo_login {
 .login-box p {
     color: var(--text-muted);
     font-size: 0.95rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* Reduzido ligeiramente para melhor distribuição de espaço */
 }
 
 /* ============================================================
@@ -123,12 +125,12 @@ h2.titulo_login {
 }
 
 .btn-auth:hover {
-    background: var(--primary);
+    background: var(--primary-hover); /* Ajustado para usar a variável correta de hover */
     box-shadow: 0 10px 20px rgba(167, 194, 126, 0.3);
 }
 
 .auth-footer {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -144,7 +146,7 @@ h2.titulo_login {
 }
 
 .auth-footer a:hover {
-    color: var(--primary);
+    color: var(--primary-hover);
 }
 
 @keyframes slideUp {
@@ -152,10 +154,43 @@ h2.titulo_login {
     to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 550px) {
-    .login-box { aspect-ratio: auto; padding: 2.5rem 1.5rem; }
-}
-
 .arredondar-popup{
     border-radius: 50px;
+}
+
+/* ============================================================
+   REGRAS DE RESPONSIVIDADE (MEDIA QUERIES)
+============================================================ */
+
+/* Ajustes para telas mobile e compactas */
+@media (max-width: 550px) {
+    .login-box { 
+        aspect-ratio: auto; /* Desativa a proporção 1:1 para o conteúdo não transbordar */
+        padding: 2.5rem 1.5rem; 
+        margin: 1rem;
+        inline-size: calc(100% - 2rem);
+    }
+
+    h2.titulo_login {
+        font-size: 26px;
+    }
+
+    .input-estilizado, .btn-auth {
+        padding: 1rem; /* Diminui levemente o espaçamento interno para poupar área de tela */
+    }
+}
+
+/* Ajuste específico para celulares muito pequenos ou orientação paisagem curta */
+@media (max-height: 600px) {
+    body {
+        align-items: flex-start; /* Evita clipping se a tela for extremamente baixa */
+    }
+    .login-box {
+        aspect-ratio: auto;
+        margin: 1rem auto;
+        padding: 1.5rem;
+    }
+    .auth-footer {
+        margin-top: 1rem;
+    }
 }

@@ -38,16 +38,73 @@
                     <input type="checkbox" id="checkLGPD">
                     <span class="checkmark"></span>
                     <span class="lgpd-text">
-                        Aceito os termos da <strong>LGPD</strong> e autorizo o tratamento dos dados.
+                        Li e aceito os <a id="abrirTermos" class="abrir-termos-uso" href="#">Termos de Uso e LGPD</a> e autorizo o tratamento dos dados.
                     </span>
                 </label>
 
-            <button type="button" id="btnCadastrar" class="btn-auth" disabled>CADASTRAR</button>
+                <button type="button" id="btnCadastrar" class="btn-auth" disabled>Finalizar Cadastro</button>
+            </form>
 
+            <!-- MODAL DE SUCESSO -->
             <dialog id="modalSucessoCadastro" class="modal-moderno">
                 <h2>Cadastro com Sucesso</h2>
                 <p>Seu cadastro foi realizado com sucesso! Seja bem vindo ao nosso sistema.</p>
-                <button id="btnRedirecionar" href="../tela de login/login.html">Voltar ao Login</button>
+                <button type="button" id="btnRedirecionar" class="btn-auth" style="padding: 12px;">Voltar ao Login</button>
+            </dialog>
+
+            <!-- MODAL DE ERRO -->
+            <dialog id="modalErro" class="modal-erro">
+                <h2>Ops! Algo deu errado</h2>
+                <p id="mensagemErro">Verifique os dados preenchidos.</p>
+                <button type="button" onclick="this.closest('dialog').close()" class="btn-fechar" style="background: #ef4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Tentar Novamente</button>
+            </dialog>
+
+            <!-- POPUP DE TERMOS DE USO -->
+            <dialog id="modalTermos" class="modal-moderno">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2 style="margin: 0; font-weight: 800;">Política de Privacidade e Tratamento de Dados — AgendaiFisio</h2>
+                    <button type="button" id="fecharTermosX" style="background: none; border: none; font-size: 1.8rem; cursor: pointer; color: #64748b;">&times;</button>
+                </div>
+                <div style="max-height: 250px; overflow-y: auto; font-size: 0.95rem; line-height: 1.6; color: #334155; margin-bottom: 1.5rem; text-align: left; padding-right: 8px;">
+                    <h2 class="texto-termos-uso">Política de Privacidade e Tratamento de Dados — AgendaiFisio</h2>
+                    <p> Da Controladoria dos Dados: 
+                    A plataforma AgendaiFisio, desenvolvida para a finalidade de Gestão de Clínicas de Fisioterapia no âmbito de Projeto Acadêmico vinculado à UNIP, figura como Controladora dos dados pessoais coletados, nos termos do art. 5º, inciso VI, da Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 — LGPD). Nesta condição, compete à Controladora deliberar acerca das finalidades e dos meios de tratamento das informações, bem como zelar pela integridade, confidencialidade e segurança dos dados sob sua custódia.</p>
+                    <p>2. Dos Dados Coletados e Respectivas Finalidades 
+                        Para o adequado funcionamento da plataforma e a prestação dos serviços a que se destina, são coletadas as seguintes categorias de dados:
+                    <p>2.1. Dados Cadastrais: nome completo, número de inscrição no Cadastro de Pessoas Físicas (CPF), data de nascimento, endereço eletrônico (e-mail) e telefone de contato. Finalidade: identificação inequívoca do titular, gestão de agendamentos e envio de notificações relativas às consultas.</p>
+                    <p>2.2. Dados Pessoais Sensíveis (Dados de Saúde): histórico clínico, anamnese, queixas principais e registros de evolução fisioterapêutica. Finalidade: elaboração e manutenção do prontuário eletrônico do paciente, assegurando a continuidade, a rastreabilidade e a qualidade técnica do tratamento prestado.</p>
+                    <p>3. Das Bases Legais para o Tratamento
+                    O tratamento dos dados pessoais é realizado em estrita observância à legislação aplicável, fundamentando-se nas seguintes hipóteses autorizativas previstas na LGPD:</p>
+                    <p>3.1. Consentimento do Titular (art. 7º, inciso I, e art. 11, inciso I): mediante aceitação expressa do presente Termo, o titular autoriza o tratamento de seus dados para fins de agendamento e comunicação.</p>
+                    <p>3.2. Tutela da Saúde (art. 7º, inciso VIII, e art. 11, inciso II, alínea "f"): tratamento realizado por profissionais de fisioterapia legalmente habilitados, para fins de registro em prontuário e execução de procedimentos clínicos.</p>
+                    <p>4. Do Acesso aos Dados
+                    Os dados de natureza clínica são tratados sob rigoroso dever de sigilo profissional. O acesso ao prontuário eletrônico é restrito ao profissional de fisioterapia responsável pelo atendimento e ao próprio titular dos dados.
+                    A plataforma adota mecanismo de Controle de Acesso Baseado em Funções (RBAC — Role-Based Access Control), de modo a assegurar que informações de saúde não sejam acessíveis a colaboradores administrativos ou a quaisquer terceiros desautorizados.</p>
+                    <p>5. Dos Direitos do Titular (art. 18 da LGPD)
+                    Ao titular dos dados é facultado, a qualquer tempo e por meio da própria plataforma, requerer:
+                    A confirmação da existência de tratamento e o acesso aos seus dados pessoais;
+                    A correção de dados incompletos, inexatos ou desatualizados;
+                    A anonimização, o bloqueio ou a eliminação de dados desnecessários, excessivos ou tratados em desconformidade com a LGPD;
+                    A portabilidade dos dados a outro fornecedor de serviço ou produto, observados os segredos comercial e industrial;
+                    A revogação do consentimento, nos termos do § 5º do art. 8º da LGPD.
+                    Observação relativa à exclusão de dados: os dados cadastrais utilizados exclusivamente para finalidades de comunicação e avisos poderão ser excluídos mediante solicitação do titular. Contudo, o histórico clínico e o prontuário fisioterapêutico estão sujeitos a normativas específicas do setor de saúde — em especial às Resoluções do Conselho Federal de Fisioterapia e Terapia Ocupacional (COFFITO) —, devendo ser conservados pelo prazo legal mínimo de guarda obrigatória, razão pela qual não poderão ser eliminados de imediato.</p>
+                    <p>6. Da Segurança da Informação
+                    A Controladora adota medidas técnicas e administrativas aptas a proteger os dados pessoais contra acessos não autorizados e situações acidentais ou ilícitas de destruição, perda, alteração, comunicação ou difusão, conforme determina o art. 46 da LGPD. Dentre as salvaguardas implementadas, destacam-se:
+                    Criptografia de dados em repouso no banco de dados;
+                    Utilização de firewalls e mecanismos de proteção perimetral;
+                    Autenticação segura de sessões e controle de acesso por credenciais individuais;
+                    Monitoramento contínuo da infraestrutura tecnológica.</p>
+
+
+                    Política de Privacidade e Tratamento de Dados — AgendaiFisio
+                    Versão 1.0 | Vigência a partir de 16 de novembro de 2025
+
+
+                    Documento controlado. Versão 1.0 — qualquer cópia impressa ou divulgada sem indicação de versão é considerada não oficial.
+
+                    Última atualização: 16/11/2025
+                </div>
+                <button type="button" id="fecharTermosBotao" class="btn-auth" style="margin-top: 0; padding: 0.8rem;">Entendi e Concordo</button>
             </dialog>
             <!-- NOVO: MODAL DE ERRO -->
             <dialog id="mnodalErro" class="modal-erro">

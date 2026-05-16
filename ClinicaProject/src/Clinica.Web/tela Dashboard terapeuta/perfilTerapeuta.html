@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" href="../Tela de Agendamento/index.css">
+    <script src="../Tela de Agendamento/index.js"></script>
+</head>
+<body>
+
+
+    <!-- Header com Menu de Conta -->
+    <header class="navbar">
+        <div class="logo" > 
+            <img src="../Tela de Agendamento/Logo.png" alt="logo" class="logo-site">
+            <h1>AgendaiFisio</h1>
+        </div>
+        
+        <div class="perfil-container" id="perfilMenu">
+            <div class="avatar">DG</div>
+            <div class="dropdown-conta">
+                <div class="user-header">
+                    <strong>Davi Gusmão</strong>
+                    <span>davigusmao@email.com</span>
+                </div>
+                <hr>
+                <a href="../Tela Consulta Paciente/TelaPaciente.html">📅 Minhas Consultas</a>
+                <a href="../tela de login/login.html" class="logout">🚪 Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container-agendamento">
+        <h1 class="titulo-sessao">Meus dados</h1>
+
+        <div class="cards-grid">
+            <!-- Card Informativo do  Perfil do Paciente-->
+            <article class="card-moderno card-paciente">
+                <span class="badge">Terapeuta  Ativo</span>
+                <h2>Dados do Terapeuta</h2>
+                <div class="info-paciente">
+                    <p><strong>Nome:</strong> Davi Gusmão</p>
+
+                <div class="input-group">
+                    <label for="emailCadastro">Seu e-mail</label>
+                    <input type="email" id="emailCadastro" placeholder="seu@email.com" class="input-estilizado" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="senhaCadastro">Senha</label>
+                    <input type="password" id="senhaCadastro" placeholder="Cadastre sua senha" class="input-estilizado" required>
+                    <button class="trocar-e-mail"> Trocar email</button>
+                    <button class="trocar-senha">Trocar a senha</button>
+                </div>
+                </div>
+            </article>
+</body>
+</html>
+
+</body>
+</html>

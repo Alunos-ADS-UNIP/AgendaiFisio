@@ -5,24 +5,29 @@ window.onload = function() {
         inputCPFCadastro: document.getElementById("cpfCadastro"),
         inputEmailCadastro: document.getElementById("emailCadastro"),
         inputSenhaCadastro: document.getElementById("senhaCadastro"),
-        checkLGPD: document.getElementById("checkLGPD"), // Novo elemento
+        checkLGPD: document.getElementById("checkLGPD"), 
         URL_API: "http://localhost:8000/register",
         sucessoModal: document.getElementById("modalSucessoCadastro"),
         btnRedirecionar: document.getElementById("btnRedirecionar"),
         dialogTerapeuta: document.getElementById("btnCadastrar"),
-        erroDialog: document.getElementById("modalErro"),
+        erroDialog: document.getElementById("modalErro"), 
         campoObrigatorio: document.getElementById("meuFormularioCadastro"),
-        crefitoReq: document.getElementById("crefitoReq")
+        crefitoReq: document.getElementById("crefitoReq"),
+        // Novas referências para o popup de termos na mesma página
+        abrirTermos: document.getElementById("abrirTermos"),
+        modalTermos: document.getElementById("modalTermos"),
+        fecharTermosX: document.getElementById("fecharTermosX"),
+        fecharTermosBotao: document.getElementById("fecharTermosBotao")
     };
 
-    // --- 1. MÁSCARA DE CPF (Lógica Funcional) ---
+    // --- 1. MÁSCARA DE CPF ---
     const aplicarMascaraCPF = (valor) => {
         return valor
-            .replace(/\D/g, "") // Remove tudo que não é número
-            .replace(/(\d{3})(\d)/, "$1.$2") // Coloca ponto após o 3º dígito
-            .replace(/(\d{3})(\d)/, "$1.$2") // Coloca ponto após o 6º dígito
-            .replace(/(\d{3})(\d{1,2})$/, "$1-$2") // Coloca traço após o 9º dígito
-            .substring(0, 14); // Limita o tamanho total
+            .replace(/\D/g, "") 
+            .replace(/(\d{3})(\d)/, "$1.$2") 
+            .replace(/(\d{3})(\d)/, "$1.$2") 
+            .replace(/(\d{3})(\d{1,2})$/, "$1-$2") 
+            .substring(0, 14); 
     };
 
     if (el.inputCPFCadastro) {
@@ -32,8 +37,24 @@ window.onload = function() {
         });
     }
 
-    // Remove o erro visual dos outros campos assim que o usuário digita algo
-    [el.inputNomeCadastro, el.inputEmailCadastro, el.inputSenhaCadastro, el.crefitoReq].forEach(input => {
+    // --- MÁSCARA DO CREFITO (123456-SP) ---
+    if (el.crefitoReq) {
+        el.crefitoReq.addEventListener("input", (e) => {
+            let valor = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+            
+            if (valor.length > 6) {
+                let parteNumerica = valor.substring(0, 6).replace(/\D/g, "");
+                let parteLetras = valor.substring(6, 8).replace(/[^A-Z]/g, "");
+                e.target.value = parteNumerica + "-" + parteLetras;
+            } else {
+                e.target.value = valor.replace(/\D/g, "");
+            }
+            el.crefitoReq.classList.remove("input-erro");
+        });
+    }
+
+    // Limpa erros dinamicamente ao digitar nos campos
+    [el.inputNomeCadastro, el.inputEmailCadastro, el.inputSenhaCadastro, el.crefitoReq, el.inputCPFCadastro].forEach(input => {
         if (input) {
             input.addEventListener("input", () => {
                 input.classList.remove("input-erro");
@@ -43,11 +64,11 @@ window.onload = function() {
         }
     });
 
+    // Lógica matemática de validação de CPF
     function validarCPF(cpf) {
-        cpf = cpf.replace(/[^\d]+/g, ''); // Remove pontos e traços
-        if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false; // Verifica tamanho e repetidos
+        cpf = cpf.replace(/[^\d]+/g, ''); 
+        if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false; 
         
-        // Lógica matemática de validação
         let soma = 0;
         let resto;
         for (let i = 1; i <= 9; i++) soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
@@ -64,36 +85,69 @@ window.onload = function() {
         return true;
     }
 
-    function checkForm() {
-        let cpf = document.getElementById('cpf').value;
-        if (!validarCPF(cpf)) {
-            alert('CPF Inválido!');
-            return false;
-        }
-        alert('CPF Válido!');
-        return true;
-    }
-
-    // --- 2. LÓGICA LGPD (Habilitar Botão) ---
+    // --- 2. LÓGICA LGPD (Escuta alterações manuais na caixinha de seleção) ---
     if (el.checkLGPD && el.btnCadastrar) {
         el.checkLGPD.addEventListener("change", () => {
             el.btnCadastrar.disabled = !el.checkLGPD.checked;
         });
     }
 
-    // --- 3. ENVIO DO FORMULÁRIO ---
+    // --- 3. POPUP DE TERMOS DE USO (CONTRATO NA MESMA PÁGINA) ---
+    if (el.abrirTermos && el.modalTermos) {
+        // Abre o popup ao clicar no link correspondente
+        el.abrirTermos.addEventListener("click", (e) => {
+            e.preventDefault();
+            el.modalTermos.showModal();
+        });
+
+        // Fecha o popup ao clicar no botão "X"
+        if (el.fecharTermosX) {
+            el.fecharTermosX.addEventListener("click", () => {
+                el.modalTermos.close();
+            });
+        }
+
+        // Ação do botão "Entendi e Concordo" dentro do popup
+        if (el.fecharTermosBotao) {
+            el.fecharTermosBotao.addEventListener("click", () => {
+                el.modalTermos.close();
+                // Marca o checkbox e habilita o botão de cadastro automaticamente
+                if (el.checkLGPD && el.btnCadastrar) {
+                    el.checkLGPD.checked = true;
+                    el.btnCadastrar.disabled = false;
+                }
+            });
+        }
+
+        // Fecha se o usuário clicar fora da área interna do modal (no fundo borrado)
+        el.modalTermos.addEventListener("click", (e) => {
+            const rect = el.modalTermos.getBoundingClientRect();
+            const clicouFora = (
+                e.clientX < rect.left ||
+                e.clientX > rect.right ||
+                e.clientY < rect.top ||
+                e.clientY > rect.bottom
+            );
+            if (clicouFora) {
+                el.modalTermos.close();
+            }
+        });
+    }
+
+    // --- 4. ENVIO E VALIDAÇÃO DO FORMULÁRIO ---
     const enviarCadastro = async () => {
         const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        const regexCrefito = /^\d{6}-[A-Z]{2}$/;
         
         const dados = {
             nomeCadastro: el.inputNomeCadastro ? el.inputNomeCadastro.value.trim() : "",
             cpf: el.inputCPFCadastro ? el.inputCPFCadastro.value.replace(/\D/g, "") : "",
             emailCadastro: el.inputEmailCadastro ? el.inputEmailCadastro.value.trim() : "",
             senhaCadastro: el.inputSenhaCadastro ? el.inputSenhaCadastro.value.trim() : "",
-            crefitoReq: el.crefitoReq ? el.crefitoReq.value.trim() : "",
+            crefitoReq: el.crefitoReq ? el.crefitoReq.value.trim().toUpperCase() : "",
         };
 
-        // CORREÇÃO 1: Incluído o el.crefitoReq na lista de limpeza para apagar erros antigos
+        // Limpeza completa de erros antigos antes da nova validação
         [el.inputNomeCadastro, el.inputCPFCadastro, el.inputEmailCadastro, el.inputSenhaCadastro, el.crefitoReq].forEach(input => {
             if (input) {
                 input.classList.remove("input-erro");
@@ -105,17 +159,12 @@ window.onload = function() {
         let formInvalido = false;
         let primeiroCampoErro = null;
 
-        // 2. FUNÇÃO AUXILIAR: Adiciona a borda e insere o texto dinamicamente abaixo do campo
         const marcarErro = (campo, mensagem) => {
             if (campo) {
                 campo.classList.add("input-erro");
-
-                // Cria o elemento de texto para o erro
                 const textoErro = document.createElement("span");
                 textoErro.className = "mensagem-erro-texto";
                 textoErro.innerText = mensagem;
-
-                // Insere o texto logo após o campo de input correspondente
                 campo.parentNode.insertBefore(textoErro, campo.nextSibling);
 
                 if (!primeiroCampoErro) primeiroCampoErro = campo;
@@ -123,49 +172,43 @@ window.onload = function() {
             }
         };
 
-        // --- VALIDAÇÕES INDIVIDUAIS COM MENSAGENS PERSONALIZADAS ---
-        
-        // Valida Nome
+        // --- VALIDAÇÕES INDIVIDUAIS ---
         if (!dados.nomeCadastro) {
             marcarErro(el.inputNomeCadastro, "O campo Nome é obrigatório.");
         }
         
-        // Valida CPF
         if (!dados.cpf) {
             marcarErro(el.inputCPFCadastro, "O campo CPF é obrigatório.");
         } else if (dados.cpf.length !== 11 || !validarCPF(dados.cpf)) {
             marcarErro(el.inputCPFCadastro, "Por favor, insira um CPF válido.");
         }
 
-        // CORREÇÃO 2: Ajustado de "dados.crefitoReq !== 9" para "dados.crefitoReq.length"
         if (!dados.crefitoReq) {
             marcarErro(el.crefitoReq, "O campo CREFITO é obrigatório.");
-        } else if (dados.crefitoReq.length < 4) { // Ajuste o número 4 para o tamanho mínimo aceito do CREFITO se necessário
-            marcarErro(el.crefitoReq, "Por Favor, insira o seu CREFITO válido.");
+        } else if (!regexCrefito.test(dados.crefitoReq)) {
+            marcarErro(el.crefitoReq, "Insira um CREFITO válido no formato: 123456-SP.");
         }
         
-        // Valida E-mail
         if (!dados.emailCadastro) {
             marcarErro(el.inputEmailCadastro, "O campo E-mail é obrigatório.");
         } else if (!regexEmail.test(dados.emailCadastro)) {
             marcarErro(el.inputEmailCadastro, "Insira um formato de e-mail válido (ex: nome@email.com).");
         }
         
-        // Valida Senha
         if (!dados.senhaCadastro) {
             marcarErro(el.inputSenhaCadastro, "O campo Senha é obrigatório.");
         } else if (dados.senhaCadastro.length < 8) {
             marcarErro(el.inputSenhaCadastro, "A senha deve conter no mínimo 8 caracteres.");
         }
 
-        // Se houver erro, para a execução, abre o modal geral e foca no primeiro campo
+        // Se houver algum erro impeditivo, exibe o modal de erro centralizado
         if (formInvalido) {
             if (el.erroDialog) el.erroDialog.showModal();
             if (primeiroCampoErro) primeiroCampoErro.focus();
             return;
         }
 
-        // Fluxo de Sucesso
+        // Fluxo Executado com Sucesso
         if (el.sucessoModal){
             el.sucessoModal.showModal();
         }
@@ -175,7 +218,7 @@ window.onload = function() {
         }, 3000);
     };
 
-    // --- 4. EVENTOS ---
+    // --- 5. MAPEAMENTO DE EVENTOS ---
     if (el.btnCadastrar) {
         el.btnCadastrar.onclick = async (e) => {
             e.preventDefault();

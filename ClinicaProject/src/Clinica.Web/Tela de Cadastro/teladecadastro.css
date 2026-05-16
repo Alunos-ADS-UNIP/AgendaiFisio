@@ -73,9 +73,11 @@ body {
     color: var(--texto-corpo);
     font-size: 0.95rem;
 }
-span.a{
+
+span.a {
     color: #C8DAA0;
 }
+
 /* ============================================================
    FORMULÁRIOS & INPUTS
 ============================================================ */
@@ -109,6 +111,25 @@ span.a{
     border-color: #A7C27E;
     background: var(--branco);
     box-shadow: 0 0 0 4px oklch(60% 0.12 250 / 0.1);
+}
+
+input:not(:focus):not(:placeholder-shown):invalid {
+    border-color: orange;
+}
+
+/* Borda e fundo do input com erro */
+.input-erro {
+    border: 2px solid #dc3545 !important;
+    background-color: #f8d7da !important;
+}
+
+/* Texto da mensagem de erro logo abaixo do input */
+.mensagem-erro-texto {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    display: block;
+    font-weight: 500;
 }
 
 /* ============================================================
@@ -157,6 +178,13 @@ span.a{
     line-height: 1.4;
 }
 
+.abrir-termos-uso {
+    color: var(--primary, #A7C27E); 
+    font-weight: 700; 
+    text-decoration: underline; 
+    cursor: pointer;
+}
+
 /* ============================================================
    BOTÕES & RODAPÉ
 ============================================================ */
@@ -200,7 +228,7 @@ span.a{
 .auth-footer a:hover { text-decoration: underline; }
 
 /* ============================================================
-   MODAIS (DIALOG)
+   MODAIS (DIALOG PADRÃO)
 ============================================================ */
 dialog {
     border: none;
@@ -223,26 +251,64 @@ dialog p { color: var(--texto-corpo); margin-bottom: 1.5rem; }
 .modal-moderno { border-top: 8px solid #22c55e; }
 
 /* ============================================================
+   CUSTOMIZAÇÃO DO POPUP DE TERMOS DE USO (MESMA PÁGINA)
+============================================================ */
+#modalTermos {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    max-width: 550px;
+    width: 90%;
+    padding: 2.5rem 2rem;
+    border: none;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+    text-align: left;
+    color: #171717;
+    opacity: 0;
+    transform: translate(-50%, -45%) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Quando o popup de termos recebe o estado [open] nativo */
+#modalTermos[open] {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Customização do efeito de fundo borrado específico para os Termos */
+#modalTermos::backdrop {
+    background: rgba(26, 26, 26, 0.5);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#modalTermos[open]::backdrop {
+    opacity: 1;
+}
+
+/* Estilização da barra de rolagem interna do texto dos termos */
+#modalTermos div::-webkit-scrollbar {
+    width: 6px;
+}
+
+#modalTermos div::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+#modalTermos div::-webkit-scrollbar-thumb {
+    background: #A7C27E;
+    border-radius: 10px;
+}
+
+/* ============================================================
    ANIMAÇÕES
 ============================================================ */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-input:not(:focus):not(:placeholder-shown):invalid {
-  border-color: orange;
-}
-/* Borda e fundo do input com erro */
-.input-erro {
-    border: 2px solid #dc3545 !important;
-    background-color: #f8d7da !important;
-}
-
-/* Texto da mensagem de erro logo abaixo do input */
-.mensagem-erro-texto {
-    color: #dc3545;
-    font-size: 0.85rem;
-    margin-top: 4px;
-    display: block;
-    font-weight: 500;
 }
