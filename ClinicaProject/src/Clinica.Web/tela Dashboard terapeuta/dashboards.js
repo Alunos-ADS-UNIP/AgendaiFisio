@@ -1,19 +1,5 @@
 // ============================================================
-// 1. ESTADO GLOBAL
-// ============================================================
-const state = {
-    consultas: [
-        { nome: "Davi Gusmão", medico: "Ana Caroline (Psicóloga)", hora: "09:30", data: "25/10/2026" }
-    ],
-    consultasSemana: [
-        { nome: "Ana Beatriz", hora: "08:00", tipo: "Primeira Vez" },
-        { nome: "Carlos Eduardo", hora: "09:30", tipo: "Retorno" },
-        { nome: "Juliana Silva", hora: "11:00", tipo: "Avaliação" }
-    ]
-};
-
-// ============================================================
-// 2. ELEMENTOS
+// 1. ELEMENTOS
 // ============================================================
 const el = {
     grid: document.getElementById("gridConsultas"),
@@ -21,6 +7,9 @@ const el = {
 
     btnAbrir: document.getElementById("btnAbrir"),
     btnConfirmar: document.getElementById("confirmarAgendamento"),
+    btnAbrirProntuario: document.getElementById("btnAbrirProntuario"),
+    btnAberturaProntuarioPaciente: document.getElementById("btn-abrir-pronturario-paciente"),
+    btnFecharProntuario: document.getElementById("btn-fechar-prontuario"),
 
     modalAgenda: document.getElementById("modalAgenda"),
     modalSucesso: document.getElementById("modalSucesso"),
@@ -34,7 +23,8 @@ const el = {
     confirmMedico: document.getElementById("confirmMedico"),
     confirmDataHora: document.getElementById("confirmDataHora"),
 
-    nomePacienteProntuario: document.getElementById("nomePacienteProntuario"),
+
+    nomePacienteProntuario: document.getElementById("nomePacienteAgendado"),
     textoProntuario: document.getElementById("textoProntuario"),
     btnSalvarProntuario: document.getElementById("btnSalvarProntuario")
 };
@@ -87,6 +77,7 @@ function renderConsultas() {
                 Ver Prontuário
             </button>
         `;
+        
 
         el.grid.appendChild(card);
     });
@@ -178,19 +169,32 @@ function finalizarAgendamento() {
 // ============================================================
 // 8. PRONTUÁRIO
 // ============================================================
+
+
+// 2. Escutador de evento no botão de abertura
+el.btnAbrirProntuario.addEventListener('click', () => {
+    // Pega o texto do paciente do seu HTML dinamicamente
+    const nomePaciente = document.getElementById('nomePacienteAgendado').innerText;
+    
+    // Passa o nome limpo para a função
+    abrirProntuario(nomePaciente.replace("Nome do paceinte: ", ""));
+});
+el.btnFecharProntuario.addEventListener('click', () => {
+    el.btnAberturaProntuarioPaciente.close();
+});
+
+// 3. Função responsável por abrir o modal do prontuário
 function abrirProntuario(nome) {
-    if (!el.modalProntuario) return;
-
-    el.nomePacienteProntuario.innerText = nome;
-    el.textoProntuario.value = "";
-
-    el.modalProntuario.showModal();
+    console.log(`Abrindo o prontuario do paciente: ${nome}`);
+    el.btnAberturaProntuarioPaciente.showModal();
 }
 
+// 4. Função para salvar o prontuário (ajustada para fechar o modal correto)
 function salvarProntuario() {
     const btn = el.btnSalvarProntuario;
-    const original = btn.innerText;
+    if (!btn) return; // Proteção caso o botão salvar ainda não exista no HTML
 
+    const original = btn.innerText;
     btn.innerText = "⌛ Salvando...";
     btn.disabled = true;
 
@@ -198,9 +202,10 @@ function salvarProntuario() {
         alert(`✅ Evolução salva!`);
         btn.innerText = original;
         btn.disabled = false;
-        el.modalProntuario.close();
+        el.modalProntuario.close(); // Fecha o modal correto
     }, 800);
 }
+
 
 // ============================================================
 // 9. EVENTOS
@@ -270,3 +275,25 @@ const renderizarCards = () => {
         grid.appendChild(card);
     });
 };
+document.addEventListener("DOMContentLoaded", () => {
+    // Captura as referências dos elementos do seu card
+    const h2NomePaciente = document.getElementById("nomePacienteAgendado");
+    const labelTerapeuta = document.querySelector(".card-consulta .campo-selecao label");
+    
+    // Lê todas as informações da memória do navegador
+    const pacienteSalvo = localStorage.getItem("pacienteAgendado");
+    const dataSalva = localStorage.getItem("dataAgendada");
+    const horaSalva = localStorage.getItem("horaAgendada");
+    const profissionalSalvo = localStorage.getItem("profissionalAgendado");
+
+    // Se encontrou dados, injeta no card de forma organizada
+    if (pacienteSalvo && h2NomePaciente) {
+        h2NomePaciente.textContent = pacienteSalvo;
+    }
+    
+    if (profissionalSalvo && labelTerapeuta) {
+        // Exibe o nome do profissional e o horário/data no card
+        labelTerapeuta.innerHTML = `<strong>Profissional:</strong> ${profissionalSalvo} <br> 
+                                    <strong>Horário:</strong> ${dataSalva} às ${horaSalva}`;
+    }
+});
