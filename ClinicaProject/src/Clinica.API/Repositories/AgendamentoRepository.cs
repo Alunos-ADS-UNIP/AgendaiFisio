@@ -15,7 +15,7 @@ namespace Clinica.API.Repositories
             _connectionString = configuration.GetConnectionString("ClinicaDb")
                 ?? throw new InvalidOperationException("Connection string 'ClinicaDb' não encontrada.");
         }
-        //TODO Tem classe pra que?
+      
         // ── Verifica conflito de horário ─────────────────────────────────────
         public int ContarAgendamentosNoHorario(Agendamento agendamento)
         {
@@ -35,7 +35,7 @@ namespace Clinica.API.Repositories
 
             return Convert.ToInt32(command.ExecuteScalar());
         }
-        //TODO Tem classe pra que?
+      
         // ── Insere novo agendamento ───────────────────────────────────────────
         public int Inserir(Agendamento agendamento)
         {

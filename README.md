@@ -9,3 +9,11 @@
 
 ### 🌐 Como rodar o Front-End:
 1. Use a extensão "Live Server" do VS Code no arquivo `cd src/Clinica.Web/index.html` ou `cd clinicaproject/src/Clinica.Web/index.html`.
+
+## Back-End
+
+- ASP.NET Core Web API
+- Entity Framework Core
+- Dapper
+- MySQL
+- .NET 8
