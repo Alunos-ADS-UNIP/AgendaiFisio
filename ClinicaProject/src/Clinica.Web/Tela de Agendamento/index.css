@@ -29,11 +29,11 @@ body {
 }
 
 .navbar {
-    padding: 3rem;
+    padding: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.8);
+    background: #ffffff;
     backdrop-filter: blur(10px);
     border-bottom: 1px solid #e2e8f0;
     position: sticky;
@@ -55,17 +55,18 @@ body {
     mix-blend-mode: multiply;
 }
 h1{
-    height: 70px;
+    height: 60px;
     padding: 0;
     margin: 0;
     justify-content: space-between;
     mix-blend-mode: multiply;
-
+    font-weight: 400;
 }
 img{
     height: 60px;
     width: auto;
     mix-blend-mode: multiply;
+    background-image: none;
 }
 
 /* MENU PERFIL (DROPDOWN ORGANIZADO) */
@@ -88,7 +89,7 @@ img{
     background: var(--branco);
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
-    padding: 1rem; /* Padding reduzido para os links encostarem nas bordas no hover */
+    padding: 1rem; 
     opacity: 0; visibility: hidden;
     transform: translateY(10px);
     transition: var(--transition);
@@ -125,7 +126,7 @@ img{
     gap: 12px;
     padding: 12px 10px;
     color: var(--texto);
-    text-decoration: none !important; /* Remove o sublinhado roxo */
+    text-decoration: none !important; 
     font-size: 0.95rem;
     font-weight: 600;
     border-radius: 12px;
@@ -148,18 +149,20 @@ img{
     padding: 4rem; 
     max-width: 1200px; 
     margin: 0 auto; 
-
 }
-.titulo-sessao { font-size: 2.5rem; 
+.titulo-sessao { 
+    font-size: 2.5rem; 
     font-weight: 900; 
     text-align: center; 
     margin-bottom: 3rem; 
     letter-spacing: -1.5px; 
-    color: var(--brand); }
+    color: var(--brand); 
+}
 
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    /* Ajustado o minmax para 280px para não quebrar em telas bem pequenas */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2.5rem;
 }
 
@@ -179,7 +182,8 @@ img{
 }
 
 .badge {
-    width: 60%;
+    width: auto; /* Alterado de 60% para auto para se ajustar ao texto responsivamente */
+    max-width: 100%;
     margin: 5px;
     background: var(--brand-soft);
     color: var(--branco);
@@ -190,16 +194,14 @@ img{
     text-transform: uppercase;
     display: inline-block;
     margin-bottom: 1.5rem;
-
 }
-
 
 /* ============================================================
    4. FORMULÁRIOS (INPUTS E BOTÕES)
 ============================================================ */
 .select-premium, .input-premium {
     width: 100%;
-    margin: 10px;
+    margin: 10px 0; /* Ajustado margem lateral para não estourar containers */
     padding: 16px;
     border-radius: 30px;
     border: 2px solid #f1f5f9;
@@ -212,7 +214,7 @@ img{
 
 .select-premium:focus, .input-premium:focus { border-color: var(--brand); background: #fff; }
 
-.btn-agendar-main, .btn-confirmar-full {
+.btn-agendar-main, .btn-confirmar-full{
     width: 100%;
     padding: 1rem;
     margin-top: 10px;
@@ -259,11 +261,9 @@ dialog::backdrop {
     z-index: 999;
 }
 
-.modal-moderno { /* Ocupa no máximo 95% da altura da tela *//* Esconde qualquer barra de rolagem do modal */
+.modal-moderno { 
     flex-direction: column;
     gap: 8px;
-    max-width: 180px;
-
     padding-right: 5px;
     margin: 0;
     border: none;
@@ -278,6 +278,8 @@ dialog::backdrop {
     border-radius: 32px;
     box-shadow: 0 40px 100px -20px rgba(0,0,0,0.3);
     z-index: 1000;
+    max-height: 90vh; /* Impede que o modal passe da altura da tela */
+    overflow-y: auto;  /* Permite scroll interno caso o conteúdo seja grande */
 }
 
 dialog[open].modal-moderno {
@@ -297,7 +299,8 @@ dialog[open].modal-moderno {
 .btn-hora.active { background: var(--brand); color: white; border-color: var(--brand); }
 
 .area-digitacao{
-    width: 450px;
+    width: 100%;          /* Alterado de 450px fixos para responsivo */
+    max-width: 450px;     /* Mantém o limite visual original */
     height: 10rem;
     font-size: 20px;
     font-weight: bold;
@@ -321,6 +324,9 @@ dialog[open].modal-moderno {
     box-shadow: 0 15px 30px rgba(255, 77, 77, 0.3);
     z-index: 10000;
     transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    width: max-content;
+    max-width: 90%; /* Garante estabilidade em celulares */
+    text-align: center;
 }
 
 .toast-erro.show { 
@@ -356,6 +362,7 @@ dialog[open].modal-moderno {
 }
 
 footer button, .body-footer-button { display: none !important; }
+
 /* Estilo para o botão de hora quando estiver bloqueado pelo terapeuta */
 .btn-hora.ocupado {
     background: #f1f5f9 !important;
@@ -404,4 +411,182 @@ footer button, .body-footer-button { display: none !important; }
 }
 #sintomasPaciente {
     transition: border-color 0.3s ease;
+}
+
+/* ============================================================
+   7. REGRAS DE RESPONSIVIDADE (MEDIA QUERIES)
+============================================================ */
+
+/* Tablets e Telas Médias (Até 768px) */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1.5rem 2rem;
+    }
+    
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    h1 {
+        height: auto;
+    }
+
+    .container-agendamento {
+        padding: 2rem 1.5rem;
+    }
+
+    .titulo-sessao {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .card-moderno {
+        padding: 2rem;
+    }
+
+    .select-premium, .input-premium {
+        font-size: 18px;
+        padding: 14px;
+    }
+
+    .btn-agendar-main, .btn-confirmar-full {
+        font-size: 1.3rem;
+    }
+}
+
+/* Smartphones e Telas Pequenas (Até 480px) */
+@media (max-width: 480px) {
+    .navbar {
+        padding: 1rem 1.2rem;
+    }
+
+    .logo {
+        font-size: 1.3rem;
+    }
+    
+    img {
+        height: 45px;
+    }
+
+    /* Ajuste para o menu dropdown não sumir para fora da tela no mobile */
+    .dropdown-conta {
+        right: -10px;
+        width: 280px;
+        max-width: calc(100vw - 20px);
+    }
+
+    .titulo-sessao {
+        font-size: 1.6rem;
+        letter-spacing: -0.5px;
+    }
+
+    .cards-grid {
+        gap: 1.5rem;
+    }
+
+    .card-moderno {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .horarios-grid {
+        grid-template-columns: repeat(2, 1fr); /* Reduz para 2 colunas para manter os botões legíveis */
+        gap: 8px;
+    }
+
+    .btn-hora {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .modal-moderno {
+        width: 92%;
+        padding: 1.2rem;
+        border-radius: 24px;
+    }
+}
+
+.input-group {
+    margin-bottom: 1.2rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--texto-titulo);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.input-estilizado {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 14px;
+    border: 2px solid var(--borda-suave);
+    background: #f8fafc;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.input-estilizado:focus {
+    outline: none;
+    border-color: #A7C27E;
+    background: var(--bg-app);
+    box-shadow: 0 0 2px 2px var(--texto);
+}
+.trocar-e-mail, .trocar-senha {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 10px;
+    border-radius: 18px;
+    border: transparent;
+    background: var(--brand);
+    color: #000000;
+    font-weight: 800;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);  
+    text-decoration: #A7C27E;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
+.trocar-e-mail:hover{
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 10px;
+    border-radius: 18px;
+    border: 1px solid;
+    background: var(--brand);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);  
+    text-decoration: #C8DAA0;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    transform: scale(0.95);
+} 
+.trocar-senha:hover{
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 10px;
+    border-radius: 18px;
+    border: 1px solid;
+    background: var(--brand);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);  
+    text-decoration: #C8DAA0;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    transform: scale(0.95);
 }

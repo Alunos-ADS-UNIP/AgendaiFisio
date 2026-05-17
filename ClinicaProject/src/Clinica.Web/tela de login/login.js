@@ -1,6 +1,5 @@
 // INTERCEPTA O ALERT TRADICIONAL E CONVERTE EM POPUP MODERNO
 window.alert = function (mensagemErros) {
-    // Agora o Swal sempre estará disponível instantaneamente
     Swal.fire({
         text: mensagemErros,
         icon: 'error',
@@ -31,43 +30,74 @@ window.onload = function() {
         });
     }
 
-
-    // --- LÓGICA DE LOGIN ---
+    // --- LÓGICA DE LOGIN COM BACK-END ---
     if (btnEntrar) {
-        btnEntrar.addEventListener("click", function(e) {
+        btnEntrar.addEventListener("click", async function(e) { // Adicionado async aqui
             e.preventDefault(); 
             e.stopPropagation();
 
             const cpfLimpio = inputCPF.value.replace(/\D/g, "");
             const senhaDigitada = inputSenha.value.trim();
             
-            if (cpfLimpio.length < 11 || senhaDigitada < 8 ) {
+            // Validação visual de tamanho mínimo
+            if (cpfLimpio.length < 11 || senhaDigitada.length < 8 ) {
                 alert("Por favor, preencha o CPF e a senha corretamente.");
                 return;
             }
 
-            // SIMULAÇÃO DE SUCESSO
-            const tokenSimulado = "jwt_" + Math.random().toString(36).substr(2);
-            localStorage.setItem('token_acesso', tokenSimulado);
-            localStorage.setItem('usuario_nome', "Davi Gusmão");
-
+            // Desabilita o botão e mostra carregamento
             btnEntrar.innerText = "Acessando...";
             btnEntrar.style.opacity = "0.7";
             btnEntrar.disabled = true;
 
-            setTimeout(() => {
+            try {
+                // Ajuste a URL '/api/login' para a rota real do seu back-end
+                const resposta = await fetch('http://localhost:5207/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        cpf: cpfLimpio,
+                        senha: senhaDigitada
+                    })
+                });
+
+                const dados = await resposta.json();
+
+                if (!resposta.ok) {
+                    // Lança o erro retornado pelo back-end (ex: "Senha incorreta")
+                    throw new Error(dados.mensagem || "Erro ao realizar login.");
+                }
+
+                // Salva os dados reais devolvidos pelo servidor
+                localStorage.setItem('token_acesso', dados.token);
+                localStorage.setItem('usuario_nome', dados.nome);
+
+                // Redireciona em caso de sucesso
                 window.location.href = "../Tela de Agendamento/index.html";
-            }, 500);
+
+            } catch (erro) {
+                // Mostra o erro no Swal através do alert interceptado
+                alert(erro.message);
+                
+                // Reativa o botão em caso de falha para o usuário tentar de novo
+                btnEntrar.innerText = "Entrar";
+                btnEntrar.style.opacity = "1";
+                btnEntrar.disabled = false;
+            }
         });
     }
 
     // Atalho Enter
     [inputCPF, inputSenha].forEach(input => {
-        input.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                btnEntrar.click();
-            }
-        });
+        if (input) {
+            input.addEventListener("keypress", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    btnEntrar.click();
+                }
+            });
+        }
     });
 };

@@ -39,6 +39,7 @@ body {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.6; }
 }
+
 /* ============================================================
    3. ESTRUTURA (LAYOUT)
    ============================================================ */
@@ -54,11 +55,12 @@ body {
     background: var(--white);
     border-right: 1px solid var(--border);
     padding: 2.5rem 1.5rem;
-    display: flex;
+    display: flex;            /* Ajustado de grid para flex para melhor distribuição vertical */
     flex-direction: column;
     position: sticky;
     top: 0;
     height: 100vh;
+    flex-shrink: 0;          /* Impede que a sidebar esmague em telas médias */
 }
 
 .logo { 
@@ -81,7 +83,7 @@ nav a {
 }
 
 nav a.active, nav a:hover { 
-    background: var(--brand-soft); 
+    background: var(--accent); 
     color: var(--bg-app); 
 }
 
@@ -102,15 +104,17 @@ nav a.active, nav a:hover {
     padding: 3rem 4rem; 
     display: flex;
     flex-direction: column;
+    min-width: 0;            /* Evita que flex-children estoure a largura da tela */
 }
 
-/* Cabeçalho Principal (CORRIGIDO: Propriedades duplicadas removidas) */
+/* Cabeçalho Principal */
 .main-header { 
     display: flex; 
     justify-content: space-between; 
     align-items: center;            
     margin-bottom: 3rem; 
     width: 100%;    
+    gap: 20px;
 }
 
 .main-header h1 { 
@@ -127,7 +131,7 @@ nav a.active, nav a:hover {
     gap: 6px;
 }
 
-/* Container do Input de Busca (Alinhado ao seu Design System) */
+/* Container do Input de Busca */
 .busca-container {
     display: flex;
     align-items: center;
@@ -135,7 +139,8 @@ nav a.active, nav a:hover {
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 10px 16px;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;         /* Ajustado de width fixo para fluido com max-width */
     box-shadow: var(--shadow-soft);
     transition: var(--transition);
 }
@@ -158,6 +163,7 @@ nav a.active, nav a:hover {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--texto);
+    background: transparent;
 }
 
 #inputBuscaPaciente::placeholder {
@@ -179,6 +185,7 @@ nav a.active, nav a:hover {
     font-weight: 700;
     cursor: pointer;
     transition: var(--transition);
+    white-space: nowrap;     /* Evita quebras esquisitas de linha no texto do botão */
 }
 
 .btn-novo:hover, .btn-confirmar-prontuario:hover { 
@@ -199,7 +206,7 @@ nav a.active, nav a:hover {
 /* Stats Cards */
 .stats-grid { 
     display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Ajustado para auto-ajuste inteligente */
     gap: 24px; 
     margin-bottom: 4rem; 
 }
@@ -214,7 +221,7 @@ nav a.active, nav a:hover {
 
 .stat-card:hover { 
     transform: translateY(-5px); 
-    box-shadow: var-shadow-soft; 
+    box-shadow: var(--shadow-soft); /* Corrigido a sintaxe do token original */
 }
 
 .stat-value { 
@@ -227,9 +234,8 @@ nav a.active, nav a:hover {
 
 /* Cards de Consulta */
 .consultas-grid { 
-    display: flex;
-    flex-wrap: wrap; 
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+    display: grid;                                            /* Normalizado para grid limpo e responsivo */
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Ajustado valor mínimo para telas menores */
     gap: 24px; 
 }
 
@@ -307,11 +313,13 @@ nav a.active, nav a:hover {
 .prontuario-modal {
     border: none; 
     border-radius: 28px; 
-    width: 90%; 
+    width: 92%; 
     max-width: 650px; 
     background: var(--white); 
     padding: 0; 
     box-shadow: 0 40px 100px rgba(0,0,0,0.2); 
+    max-height: 90vh;        /* Garante que cabe na altura de telas pequenas */
+    overflow-y: auto;        /* Ativa rolagem interna se necessário */
 }
 
 .prontuario-modal::backdrop { 
@@ -323,7 +331,7 @@ nav a.active, nav a:hover {
 
 .input-prontuario { 
     width: 100%; 
-    min-height: 200px; 
+    min-height: 180px; 
     padding: 1.5rem; 
     border-radius: 16px; 
     border: 2px solid var(--border); 
@@ -332,11 +340,14 @@ nav a.active, nav a:hover {
     resize: vertical; 
     transition: var(--transition); 
 }
+
 .area-prontuario{
     height: 100px;
-    width: 600px;
+    width: 100%;              /* Alterado de 600px para responsivo */
+    max-width: 600px;         /* Mantém o teto visual original */
     font-size: 30px;
 }
+
 /* Grid de Horários no Modal Agenda */
 .horarios-grid { 
     display: grid; 
@@ -361,6 +372,7 @@ nav a.active, nav a:hover {
     color: #ef4444 !important; 
     border-color: #fecaca; 
 }
+
 .btn-abrir-prontuario{
     border: 1px solid transparent;
     width: 100%;
@@ -370,21 +382,128 @@ nav a.active, nav a:hover {
     padding: 10px;
     margin-top: 10px;
 }
+
 .btn-abrir-prontuario:hover{
     color: var(--bg-app);
     transform: scale(1.05); 
     filter: brightness(1.0);
     transition: var(--transition);
 }
-.modalProntuario{
+
+.modalProntuario {
     border: none;
     border-radius: 15px;
-    box-shadow:  2px 3px 2px #000;
+    box-shadow: 2px 3px 2px #000;
+    width: 92%;
+    max-width: 650px;
 }
+
 .btn-outline-full{
     font-size: 20px;
 }
+
 .btn-outline-full:hover{
     background: var(--accent);
     color: var(--bg-app);
+}
+
+/* ============================================================
+   7. REGRAS DE RESPONSIVIDADE (MEDIA QUERIES)
+   ============================================================ */
+
+/* Notebooks e Telas Médias (Até 1024px) */
+@media (max-width: 1024px) {
+    .main-content {
+        padding: 2.5rem 2rem;
+    }
+    
+    .stats-grid {
+        margin-bottom: 2.5rem;
+    }
+}
+
+/* Tablets (Até 768px) */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column; /* Move a sidebar para o topo em telas de tablet/celular */
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1.5rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    nav a {
+        margin-bottom: 0;
+        padding: 8px 14px;
+        font-size: 0.9rem;
+    }
+
+    .user-info {
+        display: none; /* Oculta ou simplifica a área do usuário no mobile para poupar espaço */
+    }
+
+    .main-content {
+        padding: 2rem 1.5rem;
+    }
+
+    .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .busca-container {
+        max-width: 100%; /* Barra de busca toma toda a largura em telas menores */
+    }
+
+    .area-prontuario {
+        font-size: 22px; /* Reduz o tamanho exagerado da fonte do prontuário no mobile */
+    }
+}
+
+/* Celulares (Até 480px) */
+@media (max-width: 480px) {
+    .main-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+
+    .card-consulta {
+        padding: 1.5rem;
+    }
+
+    /* Adapta a grade de horários do modal para 2 colunas para não espremer os números */
+    .horarios-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .modal-body-prontuario {
+        padding: 0 1.2rem 1.5rem;
+    }
 }

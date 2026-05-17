@@ -39,7 +39,6 @@ body {
     color: var(--texto);
     min-height: 100vh;
     line-height: 1.6;
-    animation: gradientBG 15s ease infinite;
 }
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
