@@ -6,7 +6,7 @@ window.onload = function() {
         inputEmailCadastro: document.getElementById("emailCadastro"),
         inputSenhaCadastro: document.getElementById("senhaCadastro"),
         checkLGPD: document.getElementById("checkLGPD"), 
-        URL_API: "http://localhost:8000/register",
+        URL_API: "http://localhost:5207/api/Auth/register",
         sucessoModal: document.getElementById("modalSucessoCadastro"),
         btnRedirecionar: document.getElementById("btnRedirecionar"),
         dialogTerapeuta: document.getElementById("btnCadastrar"),
