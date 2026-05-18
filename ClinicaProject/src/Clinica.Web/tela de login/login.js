@@ -15,73 +15,79 @@ window.alert = function (mensagemErros) {
 
 window.onload = function() {
     const btnEntrar = document.getElementById("btnEntrar");
-    const inputCPF = document.getElementById("cpfLogin");
+    const inputEmail = document.getElementById("emailLogin");
     const inputSenha = document.getElementById("senha");
 
-    // --- MÁSCARA DE CPF ---
-    if (inputCPF) {
-        inputCPF.addEventListener("input", function(e) {
-            let v = e.target.value.replace(/\D/g, "");
-            if (v.length > 11) v = v.slice(0, 11);
-            v = v.replace(/(\d{3})(\d)/, "$1.$2");
-            v = v.replace(/(\d{3})(\d)/, "$1.$2");
-            v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-            e.target.value = v;
-        });
-    }
-
-    // --- LÓGICA DE LOGIN COM BACK-END ---
+    // --- LÓGICA DE LOGIN COM VALIDAÇÃO DE BACK-END ---
     if (btnEntrar) {
-        btnEntrar.addEventListener("click", async function(e) { // Adicionado async aqui
+        btnEntrar.addEventListener("click", async function(e) { // Adicionado async para usar await
             e.preventDefault(); 
             e.stopPropagation();
 
-            const cpfLimpio = inputCPF.value.replace(/\D/g, "");
+            const emailDigitado = inputEmail.value.trim();
             const senhaDigitada = inputSenha.value.trim();
-            
-            // Validação visual de tamanho mínimo
-            if (cpfLimpio.length < 11 || senhaDigitada.length < 8 ) {
-                alert("Por favor, preencha o CPF e a senha corretamente.");
+            const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+            // 1. VALIDAÇÃO DE CAMPOS VAZIOS
+            if (emailDigitado === "" || senhaDigitada === "") {
+                alert("Por favor, preencha todos os campos obrigatórios (E-mail e Senha).");
                 return;
             }
 
-            // Desabilita o botão e mostra carregamento
+            // 2. VALIDAÇÃO DA MÁSCARA DO E-MAIL
+            if (!regexEmail.test(emailDigitado)) {
+                alert("Por favor, insira um formato de e-mail válido (exemplo@email.com).");
+                return;
+            }
+
+            // 3. VALIDAÇÃO DE TAMANHO DA SENHA
+            if (senhaDigitada.length < 8) {
+                alert("A senha deve conter pelo menos 8 caracteres.");
+                return;
+            }
+
+            // Altera o estado do botão para feedback visual
             btnEntrar.innerText = "Acessando...";
             btnEntrar.style.opacity = "0.7";
             btnEntrar.disabled = true;
 
             try {
-                // Ajuste a URL '/api/login' para a rota real do seu back-end
+                // Tenta realizar a requisição na API
                 const resposta = await fetch('http://localhost:5207/api/Auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        cpf: cpfLimpio,
+                        email: emailDigitado,
                         senha: senhaDigitada
                     })
                 });
 
+                // Tenta ler o JSON da resposta do servidor
                 const dados = await resposta.json();
 
+                // Se a API respondeu, mas com status de erro (ex: 400 ou 401)
                 if (!resposta.ok) {
-                    // Lança o erro retornado pelo back-end (ex: "Senha incorreta")
-                    throw new Error(dados.mensagem || "Erro ao realizar login.");
+                    throw new Error(dados.mensagem || "Credenciais inválidas. Verifique seu e-mail e senha.");
                 }
 
-                // Salva os dados reais devolvidos pelo servidor
+                // Salva os dados reais devolvidos pelo servidor em caso de sucesso
                 localStorage.setItem('token_acesso', dados.token);
-                localStorage.setItem('usuario_nome', dados.nome);
+                localStorage.setItem('usuario_nome', dados.nome || emailDigitado.split('@')[0]);
 
-                // Redireciona em caso de sucesso
+                // Redireciona para a tela de agendamento
                 window.location.href = "../Tela de Agendamento/index.html";
 
             } catch (erro) {
-                // Mostra o erro no Swal através do alert interceptado
-                alert(erro.message);
+                // Captura erros de rede (API desligada) ou respostas inválidas
+                if (erro instanceof TypeError) {
+                    alert("Não foi possível conectar ao servidor. Verifique se a API está online.");
+                } else {
+                    alert(erro.message);
+                }
                 
-                // Reativa o botão em caso de falha para o usuário tentar de novo
+                // Reativa o botão para permitir nova tentativa
                 btnEntrar.innerText = "Entrar";
                 btnEntrar.style.opacity = "1";
                 btnEntrar.disabled = false;
@@ -90,7 +96,7 @@ window.onload = function() {
     }
 
     // Atalho Enter
-    [inputCPF, inputSenha].forEach(input => {
+    [inputEmail, inputSenha].forEach(input => {
         if (input) {
             input.addEventListener("keypress", (e) => {
                 if (e.key === "Enter") {

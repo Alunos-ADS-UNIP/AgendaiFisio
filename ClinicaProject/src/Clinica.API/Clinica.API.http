@@ -4,3 +4,7 @@ GET {{Clinica.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+{
+  "email": "string",
+  "password": "string"
+}

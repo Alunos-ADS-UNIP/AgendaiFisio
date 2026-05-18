@@ -34,9 +34,8 @@ body {
 ============================================================ */
 .login-box {
     background: var(--glass-bg);
-    inline-size: 90%;
+    inline-size:400%;
     max-inline-size: 500px;
-    aspect-ratio: 1 / 1; /* Mantém o formato quadrado perfeito no desktop */
     padding: 3rem 2.5rem;
     margin: 2rem auto; /* Substituído o 100px fixo para evitar o estouro da tela */
     max-height: 90vh; /* Garante que o box não ultrapasse a altura do dispositivo */
@@ -155,6 +154,7 @@ h2.titulo_login {
 }
 
 .arredondar-popup{
+    margin-left: 10px;
     border-radius: 50px;
 }
 
