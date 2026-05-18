@@ -53,9 +53,7 @@ namespace Clinica.API.Models.Entities
         }
 
         // ── Factory: reconstrução a partir de dados do banco (SELECT) ────────
-        /// <summary>
-        /// Reconstrói a entidade a partir de uma linha do banco de dados.
-        /// </summary>
+
         public static Agendamento FromDatabase(int id, int idPaciente, int idTerapeuta, DateTime dataHora, int duracaoMin, string status)
         {
             if (id <= 0)
@@ -73,10 +71,7 @@ namespace Clinica.API.Models.Entities
         }
 
         // ── Método de negócio: alteração de status ───────────────────────────
-        /// <summary>
-        /// Atualiza o status do agendamento com validação.
-        /// Útil antes de executar um UPDATE no banco.
-        /// </summary>
+
         public void AlterarStatus(string novoStatus)
         {
             if (string.IsNullOrWhiteSpace(novoStatus))

@@ -1,4 +1,4 @@
-CREATE DATABASE NewAgendaiFisio
+CREATE DATABASE DBAgendaiFisio
 
 GO
 

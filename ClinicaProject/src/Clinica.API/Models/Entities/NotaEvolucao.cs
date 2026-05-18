@@ -50,9 +50,7 @@ namespace Clinica.API.Models.Entities
         }
 
         // ── Factory: reconstrução a partir de dados do banco (SELECT) ────────
-        /// <summary>
-        /// Reconstrói a entidade a partir de uma linha do banco de dados.
-        /// </summary>
+
         public static NotaEvolucao FromDatabase(int id, int idProntuario, int idTerapeuta, int? idAgendamento, string textoEvolucao, DateTime dataRegistro)
         {
             if (id <= 0)

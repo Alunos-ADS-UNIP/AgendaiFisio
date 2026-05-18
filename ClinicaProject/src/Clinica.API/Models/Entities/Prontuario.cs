@@ -47,9 +47,7 @@ namespace Clinica.API.Models.Entities
         }
 
         // ── Factory: reconstrução a partir de dados do banco (SELECT) ────────
-        /// <summary>
-        /// Reconstrói a entidade a partir de uma linha do banco de dados.
-        /// </summary>
+
         public static Prontuario FromDatabase(int id, int idPaciente, int idTerapeuta, int versao, string? descricao)
         {
             if (id <= 0)
@@ -67,10 +65,6 @@ namespace Clinica.API.Models.Entities
 
         // ── Métodos de negócio ───────────────────────────────────────────────
 
-        /// <summary>
-        /// Atualiza a descrição do prontuário com validação.
-        /// Incrementa a versão automaticamente.
-        /// </summary>
         public void AtualizarDescricao(string? novaDescricao)
         {
             if (novaDescricao != null)
