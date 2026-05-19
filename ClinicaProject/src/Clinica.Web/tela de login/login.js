@@ -52,7 +52,7 @@ window.onload = function() {
 
             try {
                 // Ajuste a URL '/api/login' para a rota real do seu back-end
-                const resposta = await fetch('http://localhost:5207/api/login', {
+                const resposta = await fetch('http://localhost:5207/api/Auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

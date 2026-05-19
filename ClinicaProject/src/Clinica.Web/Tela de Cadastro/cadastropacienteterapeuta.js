@@ -9,7 +9,7 @@ window.onload = function() {
         email: document.getElementById("email") || document.getElementById("emailCadastro"),
         senha: document.getElementById("senha") || document.getElementById("senhaCadastro"),
         especialidade: document.getElementById("especialidade"), // Apenas na tela de médico
-        URL_API: "http://localhost:8000/register"
+        URL_API: "http://localhost:5207/api/Auth/register"
     };
 
     // 2. MÁSCARA DE CPF FUNCIONAL (Impede quebra de layout)
