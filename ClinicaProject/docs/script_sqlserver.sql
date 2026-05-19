@@ -8,6 +8,7 @@ CREATE TABLE usuario (
     email VARCHAR(255) NOT NULL UNIQUE,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     senha VARCHAR(20) NOT NULL,
+    crefito VARCHAR(9) UNIQUE,
     
     tipo_perfil VARCHAR(10) NOT NULL 
         CHECK (tipo_perfil IN ('PACIENTE', 'TERAPEUTA')),
