@@ -25,14 +25,12 @@ namespace AgendaiFisio.Services.Auth
 
         public async Task<UsuarioResponseDTO> RegistrarAsync(UsuarioRegisterDTO registroDto)
         {
-            // 1. Verifica se já existe um usuário com este e-mail
             var usuarioExistente = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.Email == registroDto.Email);
                 
             if (usuarioExistente != null)
                 throw new Exception("Já existe um usuário cadastrado com este e-mail.");
 
-            // 2. Cria a entidade Usuario criptografando a senha com BCrypt
             var novoUsuario = new Usuario
             {
                 Email = registroDto.Email.ToLower(),
@@ -42,7 +40,7 @@ namespace AgendaiFisio.Services.Auth
 
             _context.Usuarios.Add(novoUsuario);
 
-            // 3. Criação automática do perfil correspondente
+            // Cria o perfil inicial.
             if (registroDto.TipoUsuario.Equals("Paciente", StringComparison.OrdinalIgnoreCase))
             {
                 var novoPaciente = new Entities.Paciente
@@ -80,10 +78,8 @@ namespace AgendaiFisio.Services.Auth
                 _context.Profissionais.Add(novoProfissional);
             }
 
-            // 4. Salva o Usuario e o Paciente/Profissional em uma única transação
             await _context.SaveChangesAsync();
 
-            // 5. Retorna os dados mapeados
             return new UsuarioResponseDTO
             {
                 Id = novoUsuario.Id, 
@@ -109,7 +105,6 @@ namespace AgendaiFisio.Services.Auth
                 throw new UnauthorizedAccessException("E-mail ou senha inválidos.");
             }
 
-            // Geração do Token JWT
             return GerarTokenJwt(usuario);
         }
 

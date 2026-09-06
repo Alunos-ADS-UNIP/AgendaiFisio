@@ -10,7 +10,7 @@ namespace AgendaiFisio.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // Exige o Token JWT!
+    [Authorize]
     public class PacienteController : ControllerBase
     {
         private readonly IPacienteService _pacienteService;
@@ -26,7 +26,6 @@ namespace AgendaiFisio.Controllers
         {
             try
             {
-                // Pega o ID do usuário direto do Token JWT
                 var usuarioIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 
                 if (string.IsNullOrEmpty(usuarioIdClaim))
@@ -34,7 +33,6 @@ namespace AgendaiFisio.Controllers
 
                 var usuarioId = Guid.Parse(usuarioIdClaim);
 
-                // Executa a atualização no banco de dados
                 await _pacienteService.UpdatePacienteAsync(usuarioId, dto);
 
                 return Ok(new { mensagem = "Perfil atualizado com sucesso!" });

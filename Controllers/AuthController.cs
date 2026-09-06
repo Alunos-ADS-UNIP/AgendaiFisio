@@ -7,7 +7,7 @@ using AgendaiFisio.DTOs.Usuario;
 namespace AgendaiFisio.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] // A rota ficará: api/auth
+    [Route("api/[controller]")] 
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -17,8 +17,7 @@ namespace AgendaiFisio.Controllers
             _authService = authService;
         }
         
-        
-        [HttpPost("register")]// A rota POST api/auth/register
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UsuarioRegisterDTO registroDto)
         {
             try
@@ -32,8 +31,7 @@ namespace AgendaiFisio.Controllers
             }
         }
 
-
-        [HttpPost("login")] // A rota POST api/auth/login
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UsuarioLoginDTO loginDTO)
         {
             if (!ModelState.IsValid)
@@ -43,10 +41,8 @@ namespace AgendaiFisio.Controllers
 
             try
             {
-                // Chama o serviço que busca o usuário e gera o JWT
                 string token = await _authService.RealizarLoginAsync(loginDTO);
 
-                // Retorna HTTP 200 (OK) com o token no formato JSON
                 return Ok(new 
                 { 
                     Message = "Login realizado com sucesso.",
@@ -55,12 +51,10 @@ namespace AgendaiFisio.Controllers
             }
             catch (UnauthorizedAccessException ex)
             {
-                // Retorna HTTP 401 (Unauthorized) se a senha ou email estiverem errados
                 return Unauthorized(new { Erro = ex.Message });
             }
             catch (Exception ex)
             {
-                // Retorna HTTP 500 para qualquer outro erro inesperado
                 return StatusCode(500, new { Erro = "Ocorreu um erro interno no servidor.", Detalhe = ex.Message });
             }
         }

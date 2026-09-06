@@ -11,7 +11,6 @@ namespace AgendaiFisio.DTOs.Profissional
         public string Especialidade { get; set; } = string.Empty;
         public string Telefone { get; set; } = string.Empty;
         
-        // Retorna o status de aprovação (true = aprovado, false = pendente de análise)
         public bool Ativo { get; set; } 
     }
 }

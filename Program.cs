@@ -10,16 +10,13 @@ using AgendaiFisio.Services.Profissional;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Configuração do Banco de Dados
 builder.Services.AddDbContext<AgendaiFisioDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AgendaiFisioDbContext")));
 
-// 2. Injeção de Dependência (DI) dos Serviços
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
-builder.Services.AddScoped<IProfissionalService, ProfissionalService>(); 
+builder.Services.AddScoped<IProfissionalService, ProfissionalService>();
 
-// 3. Configuração da Autenticação JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings.GetValue<string>("SecretKey");
 
@@ -30,7 +27,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; 
+    options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -48,11 +45,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
 
 if (app.Environment.IsDevelopment())
 {

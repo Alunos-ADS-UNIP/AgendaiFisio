@@ -13,7 +13,7 @@ namespace AgendaiFisio.Entities
         public string Telefone { get; set; }
         public DateTime DataNascimento { get; set; }
         public string Sexo { get; set; }
-        public string EstadoCivil { get; set; } //Ex: "Solteiro(a)", "Casado(a)", "Separado(a)", "Divorciado(a)", "Viúvo(a)"
+        public string EstadoCivil { get; set; }
         
         
         public virtual Endereco Endereco { get; set; }

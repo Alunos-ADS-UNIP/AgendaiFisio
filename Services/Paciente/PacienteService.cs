@@ -16,7 +16,7 @@ namespace AgendaiFisio.Services.Paciente
             _context = context;
         }
 
-        // 1. Método para buscar o paciente (exigido pela interface)
+        
         public async Task<Entities.Paciente> GetPacienteByIdAsync(Guid id)
         {
             return await _context.Pacientes
@@ -24,7 +24,7 @@ namespace AgendaiFisio.Services.Paciente
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        // 2. Método de atualização que criamos (agora com o nome correto)
+        
         public async Task<bool> UpdatePacienteAsync(Guid usuarioId, PacienteUpdateDTO dto)
         {
             var paciente = await _context.Pacientes
@@ -46,13 +46,13 @@ namespace AgendaiFisio.Services.Paciente
                 paciente.Endereco = new Endereco();
             }
 
-            // Atualiza os dados do endereço vindos do DTO
+            
             paciente.Endereco.Rua = dto.Rua;
             paciente.Endereco.Numero = dto.Numero;
             paciente.Endereco.Cep = dto.Cep;
             
-            // Preenche com vazio caso o DTO não tenha essas propriedades, 
-            // evitando o erro de "Cannot insert NULL" no banco de dados
+            
+           
             paciente.Endereco.Complemento = string.Empty;
             paciente.Endereco.Bairro = string.Empty;
             paciente.Endereco.Cidade = string.Empty;

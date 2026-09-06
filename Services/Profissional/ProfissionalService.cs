@@ -38,7 +38,6 @@ namespace AgendaiFisio.Services.Profissional
 
         public async Task<ProfissionalResponseDTO> CreateProfissionalAsync(ProfissionalCreateDTO profissional)
         {
-            // Validações de duplicidade
             bool emailExists = await _context.Usuarios.AnyAsync(u => u.Email == profissional.Email);
             if (emailExists) throw new Exception("O e-mail informado já está em uso.");
 
@@ -48,17 +47,15 @@ namespace AgendaiFisio.Services.Profissional
             bool crefitoExists = await _context.Profissionais.AnyAsync(p => p.Crefito == profissional.Crefito);
             if (crefitoExists) throw new Exception("O CREFITO informado já está em uso.");
 
-            // Criação da credencial de acesso
             var usuario = new Usuario
             {
                 Email = profissional.Email,
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword(profissional.Senha),
-                TipoUsuario = "Profissional" // Pode usar sua constante/enum aqui
+                TipoUsuario = "Profissional"
             };
             
             _context.Usuarios.Add(usuario);
 
-            // Criação do perfil do Profissional
             var novoProfissional = new Entities.Profissional
             {
                 Usuario = usuario,
@@ -70,7 +67,7 @@ namespace AgendaiFisio.Services.Profissional
                 DataNascimento = profissional.DataNascimento,
                 DataCadastro = DateTime.UtcNow,
                 
-                // REGRA DE NEGÓCIO: O profissional entra inativo até ser aprovado pela administração
+                // Aguarda aprovação.
                 Ativo = false 
             };
             

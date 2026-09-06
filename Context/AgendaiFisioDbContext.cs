@@ -28,18 +28,15 @@ namespace AgendaiFisio.Context
 
             base.OnModelCreating(modelBuilder);
 
-            // Configuração do relacionamento entre AvaliacaoFisioterapeuta e PlanoTerapeutico 1:1
             modelBuilder.Entity<AvaliacaoFisioterapeuta>()
                 .HasOne(a => a.Plano)
                 .WithOne(p => p.AvaliacaoFisioterapeuta)
                 .HasForeignKey<PlanoTerapeutico>(p => p.AvaliacaoFisioterapeutaId);
 
-                // Configuração para garantir que o email seja único
                 modelBuilder.Entity<Usuario>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
-                // BLOQUEIO DE CASCATA: Nao permite o delete de um Profissional ou Paciente se houver AvaliacaoFisioterapeuta associada. 
             modelBuilder.Entity<AvaliacaoFisioterapeuta>()
                 .HasOne(a => a.Profissional)
                 .WithMany()

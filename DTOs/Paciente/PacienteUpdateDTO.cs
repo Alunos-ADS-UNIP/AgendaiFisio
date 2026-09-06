@@ -15,7 +15,6 @@ namespace AgendaiFisio.DTOs.Paciente
         [Required(ErrorMessage = "O CPF é obrigatório.")]
         public string Cpf { get; set; } = string.Empty; 
 
-        // Adicione a data de nascimento aqui:
         [Required(ErrorMessage = "A data de nascimento é obrigatória.")]
         public DateTime DataNascimento { get; set; }
 

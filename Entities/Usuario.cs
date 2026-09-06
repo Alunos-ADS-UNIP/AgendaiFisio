@@ -11,7 +11,7 @@ namespace AgendaiFisio.Entities
         public string Email { get; set; }
         public string SenhaHash { get; set; }
 
-        public string TipoUsuario { get; set; } // EX: "Clinica", "Paciente", "Profissional"
+        public string TipoUsuario { get; set; }
 
         public virtual Paciente Paciente { get; set; }  
 
