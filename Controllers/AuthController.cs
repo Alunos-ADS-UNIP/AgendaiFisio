@@ -6,17 +6,20 @@ using AgendaiFisio.DTOs.Usuario;
 
 namespace AgendaiFisio.Controllers
 {
+    // Recebe as solicitações de cadastro e login.
     [ApiController]
     [Route("api/[controller]")] 
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
 
+        // Guarda o serviço que executa as regras de autenticação.
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
         
+        // Cria uma nova conta de usuário.
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UsuarioRegisterDTO registroDto)
         {
@@ -31,11 +34,13 @@ namespace AgendaiFisio.Controllers
             }
         }
 
+        // Confere os dados e devolve um token de acesso.
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UsuarioLoginDTO loginDTO)
         {
             if (!ModelState.IsValid)
             {
+                // Informa quando os dados enviados estão incompletos.
                 return BadRequest(ModelState);
             }
 
@@ -51,6 +56,7 @@ namespace AgendaiFisio.Controllers
             }
             catch (UnauthorizedAccessException ex)
             {
+                // Informa quando o login não é autorizado.
                 return Unauthorized(new { Erro = ex.Message });
             }
             catch (Exception ex)

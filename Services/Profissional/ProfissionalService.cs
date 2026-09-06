@@ -7,15 +7,18 @@ using AgendaiFisio.Entities;
 
 namespace AgendaiFisio.Services.Profissional
 {
+    // Busca, cria e atualiza profissionais.
     public class ProfissionalService : IProfissionalService
     {
         private readonly AgendaiFisioDbContext _context;
 
+        // Guarda o banco usado pelo serviço.
         public ProfissionalService(AgendaiFisioDbContext context)
         {
             _context = context;
         }
 
+        // Busca um profissional e os dados da conta ligada a ele.
         public async Task<ProfissionalResponseDTO> GetProfissionalByIdAsync(Guid id)
         {
             var profissional = await _context.Profissionais
@@ -36,8 +39,10 @@ namespace AgendaiFisio.Services.Profissional
             };
         }
 
+        // Cria a conta e o perfil de um profissional.
         public async Task<ProfissionalResponseDTO> CreateProfissionalAsync(ProfissionalCreateDTO profissional)
         {
+            // Impede o cadastro de dados que já pertencem a outra pessoa.
             bool emailExists = await _context.Usuarios.AnyAsync(u => u.Email == profissional.Email);
             if (emailExists) throw new Exception("O e-mail informado já está em uso.");
 
@@ -47,6 +52,7 @@ namespace AgendaiFisio.Services.Profissional
             bool crefitoExists = await _context.Profissionais.AnyAsync(p => p.Crefito == profissional.Crefito);
             if (crefitoExists) throw new Exception("O CREFITO informado já está em uso.");
 
+            // Cria a conta de acesso do profissional.
             var usuario = new Usuario
             {
                 Email = profissional.Email,
@@ -56,6 +62,7 @@ namespace AgendaiFisio.Services.Profissional
             
             _context.Usuarios.Add(usuario);
 
+            // Cria o perfil com situação inicial pendente.
             var novoProfissional = new Entities.Profissional
             {
                 Usuario = usuario,
@@ -67,7 +74,6 @@ namespace AgendaiFisio.Services.Profissional
                 DataNascimento = profissional.DataNascimento,
                 DataCadastro = DateTime.UtcNow,
                 
-                // Aguarda aprovação.
                 Ativo = false 
             };
             
@@ -86,8 +92,10 @@ namespace AgendaiFisio.Services.Profissional
             };
         }
 
+        // Atualiza os dados de um profissional já cadastrado.
         public async Task<ProfissionalResponseDTO> UpdateProfissionalAsync(Guid id, ProfissionalUpdateDTO profissional)
         {
+            // Busca o perfil e a conta que será alterada.
             var existingProfissional = await _context.Profissionais
                 .Include(p => p.Usuario)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -96,6 +104,7 @@ namespace AgendaiFisio.Services.Profissional
 
             if (existingProfissional.Usuario != null && existingProfissional.Usuario.Email != profissional.Email)
             {
+                // Confere se o novo e-mail ainda está disponível.
                 bool emailInUse = await _context.Usuarios.AnyAsync(u => u.Email == profissional.Email && u.Id != existingProfissional.UsuarioId);
                 if (emailInUse) throw new Exception("O novo e-mail informado já está em uso por outra conta.");
                 

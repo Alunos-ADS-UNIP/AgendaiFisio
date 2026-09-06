@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.DTOs.Usuario
 {
+    // Define os dados necessários para fazer login.
     public class UsuarioLoginDTO
     {
         [Required(ErrorMessage = "O E-mail é obrigatório.")]

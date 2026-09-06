@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.Entities
 {
+    // Guarda o plano de tratamento de uma avaliação.
     public class PlanoTerapeutico
     {
         public Guid Id { get; set; } = Guid.NewGuid(); 

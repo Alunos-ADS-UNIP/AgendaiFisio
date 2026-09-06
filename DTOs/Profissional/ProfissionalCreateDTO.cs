@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgendaiFisio.DTOs.Profissional
 {
+    // Define os dados necessários para criar um profissional.
     public class ProfissionalCreateDTO
     {
         [Required(ErrorMessage = "O E-mail é obrigatório.")]

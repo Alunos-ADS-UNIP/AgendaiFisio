@@ -12,25 +12,30 @@ using AgendaiFisio.Entities;
 
 namespace AgendaiFisio.Services.Auth
 {
+    // Aplica as regras de cadastro, login e criação de tokens.
     public class AuthService : IAuthService 
     {
         private readonly AgendaiFisioDbContext _context;
         private readonly IConfiguration _configuration;
 
+        // Recebe o banco e as configurações da aplicação.
         public AuthService(AgendaiFisioDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
 
+        // Cadastra o usuário e cria seu perfil inicial.
         public async Task<UsuarioResponseDTO> RegistrarAsync(UsuarioRegisterDTO registroDto)
         {
+            // Procura uma conta já cadastrada com o mesmo e-mail.
             var usuarioExistente = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.Email == registroDto.Email);
                 
             if (usuarioExistente != null)
                 throw new Exception("Já existe um usuário cadastrado com este e-mail.");
 
+            // Guarda a senha protegida, e não o texto original.
             var novoUsuario = new Usuario
             {
                 Email = registroDto.Email.ToLower(),
@@ -40,7 +45,7 @@ namespace AgendaiFisio.Services.Auth
 
             _context.Usuarios.Add(novoUsuario);
 
-            // Cria o perfil inicial.
+            // Cria um perfil vazio conforme o tipo de usuário.
             if (registroDto.TipoUsuario.Equals("Paciente", StringComparison.OrdinalIgnoreCase))
             {
                 var novoPaciente = new Entities.Paciente
@@ -78,8 +83,10 @@ namespace AgendaiFisio.Services.Auth
                 _context.Profissionais.Add(novoProfissional);
             }
 
+            // Salva a conta e o perfil no banco.
             await _context.SaveChangesAsync();
 
+            // Devolve apenas os dados públicos do usuário.
             return new UsuarioResponseDTO
             {
                 Id = novoUsuario.Id, 
@@ -88,8 +95,10 @@ namespace AgendaiFisio.Services.Auth
             };
         }
 
+        // Confere o login e cria um token para o usuário.
         public async Task<string> RealizarLoginAsync(UsuarioLoginDTO loginDTO)
         {
+            // Procura o usuário pelo e-mail informado.
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(u => u.Email == loginDTO.Email);
 
@@ -105,9 +114,11 @@ namespace AgendaiFisio.Services.Auth
                 throw new UnauthorizedAccessException("E-mail ou senha inválidos.");
             }
 
+            // Gera o token depois de validar os dados.
             return GerarTokenJwt(usuario);
         }
 
+        // Monta o token com os dados e o tempo de validade do usuário.
         private string GerarTokenJwt(Usuario usuario)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
@@ -134,6 +145,7 @@ namespace AgendaiFisio.Services.Auth
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
+            // Cria o token e transforma-o em texto para a resposta.
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }

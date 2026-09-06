@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.Entities
 {
+    // Guarda os dados do fisioterapeuta cadastrado.
     public class Profissional
     {
         public Guid Id { get; set; } = Guid.NewGuid();

@@ -7,6 +7,7 @@ using AgendaiFisio.Validations;
 
 namespace AgendaiFisio.DTOs.Paciente
 {
+    // Define os dados usados para atualizar um paciente.
     public class PacienteUpdateDTO
     {
         [Required(ErrorMessage = "O nome completo é obrigatório.")]

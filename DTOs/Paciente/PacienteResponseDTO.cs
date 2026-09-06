@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.DTOs.Paciente
 {
+    // Define os dados do paciente enviados pela API.
     public class PacienteResponseDTO
     {
         public Guid Id { get; set; }

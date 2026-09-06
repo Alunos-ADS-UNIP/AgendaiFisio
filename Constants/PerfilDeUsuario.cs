@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.Constants
 {
+    // Reúne os nomes dos tipos de usuário aceitos pelo sistema.
     public class PerfilDeUsuario
     {
         public const string Admin = "Clinica";

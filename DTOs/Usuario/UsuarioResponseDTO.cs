@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.DTOs.Usuario
 {
+    // Define os dados públicos devolvidos após o cadastro.
     public class UsuarioResponseDTO
     {
         public Guid Id { get; set; }

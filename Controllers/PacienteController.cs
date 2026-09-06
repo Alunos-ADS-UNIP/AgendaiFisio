@@ -8,6 +8,7 @@ using AgendaiFisio.Services.Paciente;
 
 namespace AgendaiFisio.Controllers
 {
+    // Recebe solicitações relacionadas ao perfil do paciente.
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
@@ -15,11 +16,13 @@ namespace AgendaiFisio.Controllers
     {
         private readonly IPacienteService _pacienteService;
 
+        // Guarda o serviço usado para alterar o paciente.
         public PacienteController(IPacienteService pacienteService)
         {
             _pacienteService = pacienteService;
         }
 
+        // Atualiza os dados do paciente que está logado.
         [HttpPut("completar-perfil")]
         [Authorize(Roles = "Paciente")] 
         public async Task<IActionResult> UpdatePacienteAsync([FromBody] PacienteUpdateDTO dto)
@@ -29,7 +32,10 @@ namespace AgendaiFisio.Controllers
                 var usuarioIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 
                 if (string.IsNullOrEmpty(usuarioIdClaim))
+                {
+                    // Impede a atualização sem identificar o usuário.
                     return Unauthorized("Usuário não identificado no token.");
+                }
 
                 var usuarioId = Guid.Parse(usuarioIdClaim);
 
@@ -39,6 +45,7 @@ namespace AgendaiFisio.Controllers
             }
             catch (Exception ex)
             {
+                // Devolve ao cliente o erro ocorrido no processamento.
                 return BadRequest(new { erro = ex.Message });
             }
         }

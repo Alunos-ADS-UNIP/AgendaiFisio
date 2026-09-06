@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.Entities
 {
+    // Guarda os dados pessoais e o endereço do paciente.
     public class Paciente
     {
         public Guid Id { get; set; } = Guid.NewGuid();

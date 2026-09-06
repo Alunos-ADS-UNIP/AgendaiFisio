@@ -7,6 +7,7 @@ using AgendaiFisio.Validations;
 
 namespace AgendaiFisio.DTOs.Paciente
 {
+    // Define os dados necessários para criar um paciente.
     public class PacienteCreateDTO
     {
         [Required(ErrorMessage = "O nome é obrigatório.")]

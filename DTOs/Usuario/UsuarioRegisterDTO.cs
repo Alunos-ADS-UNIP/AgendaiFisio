@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgendaiFisio.DTOs.Usuario
 {
+    // Define os dados necessários para criar uma conta.
     public class UsuarioRegisterDTO
     {
         [Required(ErrorMessage = "O e-mail é obrigatório.")]

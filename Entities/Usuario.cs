@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.Entities
 {
+    // Guarda os dados usados para acessar o sistema.
     public class Usuario
     {
         public Guid Id { get; set; } = Guid.NewGuid();

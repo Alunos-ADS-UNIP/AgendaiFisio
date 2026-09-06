@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgendaiFisio.DTOs.Profissional
 {
+    // Define os dados usados para atualizar um profissional.
     public class ProfissionalUpdateDTO
     {
         [Required(ErrorMessage = "O E-mail é obrigatório.")]

@@ -8,6 +8,7 @@ using AgendaiFisio.Entities;
 
 namespace AgendaiFisio.Context
 {
+    // Representa as tabelas e relações usadas no banco.
     public class AgendaiFisioDbContext : DbContext
     {
         public AgendaiFisioDbContext(DbContextOptions<AgendaiFisioDbContext> options) : base(options)
@@ -25,24 +26,28 @@ namespace AgendaiFisio.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            // Define as relações e regras das tabelas.
             base.OnModelCreating(modelBuilder);
 
+            // Liga uma avaliação a um único plano terapêutico.
             modelBuilder.Entity<AvaliacaoFisioterapeuta>()
                 .HasOne(a => a.Plano)
                 .WithOne(p => p.AvaliacaoFisioterapeuta)
                 .HasForeignKey<PlanoTerapeutico>(p => p.AvaliacaoFisioterapeutaId);
 
-                modelBuilder.Entity<Usuario>()
+                // Impede dois usuários com o mesmo e-mail.
+            modelBuilder.Entity<Usuario>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
+            // Evita apagar avaliações junto com o profissional.
             modelBuilder.Entity<AvaliacaoFisioterapeuta>()
                 .HasOne(a => a.Profissional)
                 .WithMany()
                 .HasForeignKey(a => a.ProfissionalId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Evita apagar avaliações junto com o paciente.
             modelBuilder.Entity<AvaliacaoFisioterapeuta>()
                 .HasOne(a => a.Paciente)
                 .WithMany()

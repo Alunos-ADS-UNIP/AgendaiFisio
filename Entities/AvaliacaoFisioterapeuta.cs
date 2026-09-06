@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace AgendaiFisio.Entities
 {
+    // Guarda as informações da avaliação feita pelo fisioterapeuta.
     public class AvaliacaoFisioterapeuta
     {
         public Guid Id { get; set; } = Guid.NewGuid();

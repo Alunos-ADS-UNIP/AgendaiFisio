@@ -2,6 +2,7 @@ using System;
 
 namespace AgendaiFisio.DTOs.Profissional
 {
+    // Define os dados do profissional enviados pela API.
     public class ProfissionalResponseDTO
     {
         public Guid Id { get; set; }
